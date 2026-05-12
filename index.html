@@ -1,1633 +1,638 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#07071a">
-<title>StudyAI Pro | #1 Study Hub by Master Arhan</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<style>
-:root {
-  --bg: #07071a;
-  --bg2: #0d0d24;
-  --glass: rgba(18,18,42,0.55);
-  --glass2: rgba(255,255,255,0.04);
-  --border: rgba(255,255,255,0.08);
-  --border2: rgba(108,92,231,0.3);
-  --p: #7c6bef;
-  --p2: #a89bff;
-  --a: #00d4cc;
-  --a2: #ff6eb4;
-  --a3: #ffd166;
-  --txt: #e8e8f8;
-  --txt2: #8888aa;
-  --danger: #e05260;
-  --success: #29c77f;
-  --r: 18px;
-  --r2: 12px;
-  --t: 0.28s cubic-bezier(0.4,0,0.2,1);
-  --blur: blur(20px);
-  --sh: 0 8px 32px rgba(0,0,0,0.4);
-  --sh2: 0 20px 60px rgba(0,0,0,0.5);
-  --fw: 900px;
-}
-.light {
-  --bg:#f0f2fa;--bg2:#e8eaf6;--glass:rgba(255,255,255,0.7);--glass2:rgba(0,0,0,0.02);
-  --border:rgba(0,0,0,0.08);--txt:#1a1a2e;--txt2:#5a5a7a;--sh:0 4px 20px rgba(0,0,0,0.1);
-}
-*{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{
-  font-family:'Outfit',system-ui,sans-serif;
-  background:var(--bg);
-  background-image:
-    radial-gradient(ellipse at 15% 15%,rgba(124,107,239,0.18) 0%,transparent 50%),
-    radial-gradient(ellipse at 85% 85%,rgba(0,212,204,0.12) 0%,transparent 50%),
-    radial-gradient(ellipse at 50% 50%,rgba(255,110,180,0.06) 0%,transparent 70%);
-  background-attachment:fixed;
-  color:var(--txt);min-height:100vh;overflow-x:hidden;
-  transition:background var(--t),color var(--t);
-}
-::-webkit-scrollbar{width:4px;}
-::-webkit-scrollbar-thumb{background:var(--p);border-radius:10px;}
-
-/* HEADER */
-.hdr{
-  position:sticky;top:0;z-index:120;
-  background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
-  border-bottom:1px solid var(--border);
-  padding:0 16px;height:56px;display:flex;align-items:center;justify-content:space-between;gap:8px;
-}
-.logo-area{display:flex;align-items:center;gap:10px;flex-shrink:0;}
-.logo{
-  font-size:1.25rem;font-weight:900;
-  background:linear-gradient(135deg,var(--p2),var(--a));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  cursor:pointer;white-space:nowrap;letter-spacing:-0.5px;
-}
-.badge{
-  font-size:0.6rem;background:rgba(124,107,239,0.2);color:var(--p2);
-  border:1px solid rgba(124,107,239,0.35);padding:2px 9px;border-radius:20px;
-  white-space:nowrap;font-weight:600;letter-spacing:0.2px;
-}
-.hdr-r{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
-select{
-  padding:6px 10px;border-radius:25px;border:1px solid var(--border);
-  background:rgba(30,30,60,0.6);backdrop-filter:blur(8px);
-  color:var(--txt);font-size:0.75rem;font-family:inherit;outline:none;cursor:pointer;
-  transition:var(--t);max-width:90px;
-}
-select:focus{border-color:var(--p);}
-.btn{
-  padding:7px 14px;border-radius:25px;border:none;background:var(--p);
-  color:#fff;font-weight:700;font-size:0.78rem;cursor:pointer;font-family:inherit;
-  display:inline-flex;align-items:center;gap:5px;justify-content:center;
-  transition:var(--t);white-space:nowrap;min-height:34px;
-}
-.btn:hover{transform:translateY(-1px);filter:brightness(1.15);}
-.btn:active{transform:translateY(0);}
-.btn.sec{background:var(--glass2);color:var(--txt);border:1px solid var(--border);}
-.btn.acc{background:var(--a);color:#000;}
-.btn.acc2{background:var(--a2);color:#fff;}
-.btn.acc3{background:var(--a3);color:#000;}
-.btn.dng{background:var(--danger);}
-.btn.sm{padding:5px 11px;font-size:0.7rem;border-radius:18px;min-height:28px;}
-.btn.ico{width:36px;height:36px;border-radius:50%;padding:0;font-size:1rem;}
-.ham{background:none;border:none;color:var(--txt);cursor:pointer;padding:6px;
-  font-size:1.3rem;display:flex;align-items:center;border-radius:8px;transition:var(--t);min-width:44px;min-height:44px;justify-content:center;}
-.ham:hover{background:var(--glass2);}
-
-/* SIDEBAR */
-.sb{
-  position:fixed;top:0;left:0;height:100vh;width:240px;
-  background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
-  border-right:1px solid var(--border);
-  padding:64px 8px 20px;z-index:200;display:flex;flex-direction:column;gap:1px;
-  transform:translateX(0);transition:transform 0.32s cubic-bezier(0.4,0,0.2,1);
-  overflow-y:auto;scrollbar-width:thin;
-}
-.sb.off{transform:translateX(-100%);}
-.nav{
-  padding:9px 12px;border-radius:var(--r2);cursor:pointer;
-  display:flex;align-items:center;gap:9px;font-weight:500;
-  color:var(--txt2);font-size:0.8rem;transition:var(--t);
-  border:1px solid transparent;position:relative;min-height:40px;
-}
-.nav:hover{background:rgba(124,107,239,0.12);color:var(--txt);}
-.nav.on{
-  background:rgba(124,107,239,0.22);color:#fff;
-  border:1px solid rgba(124,107,239,0.4);font-weight:700;
-  box-shadow:0 0 20px rgba(124,107,239,0.2);
-}
-.nav.on::before{
-  content:'';position:absolute;left:0;top:8px;bottom:8px;
-  width:3px;background:var(--a);border-radius:0 3px 3px 0;
-}
-.nb{background:var(--a2);color:#fff;font-size:0.55rem;padding:1px 5px;border-radius:8px;margin-left:auto;font-weight:700;}
-.bdp{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:160;}
-.bdp.on{display:block;}
-
-/* CONTENT */
-.cnt{
-  margin-left:240px;padding:24px;min-height:100vh;
-  transition:margin-left 0.32s cubic-bezier(0.4,0,0.2,1);
-  max-width:calc(var(--fw) + 240px);
-}
-.cnt.wide{margin-left:0;}
-.inner{max-width:var(--fw);margin:0 auto;}
-
-/* PAGE SECTIONS */
-.sec{display:none;animation:fs 0.32s var(--t);}
-.sec.on{display:block;}
-@keyframes fs{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
-.sec h2{font-size:1.5rem;font-weight:900;margin-bottom:16px;letter-spacing:-0.5px;}
-
-/* CARDS */
-.card{
-  background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
-  border-radius:var(--r);padding:20px;margin-bottom:16px;
-  border:1px solid var(--border);box-shadow:var(--sh);transition:var(--t);
-}
-.card:hover{border-color:var(--border2);box-shadow:var(--sh2);}
-.card h3{font-size:1rem;font-weight:700;margin-bottom:12px;}
-.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:16px;}
-.scard{
-  background:var(--glass);backdrop-filter:var(--blur);border-radius:var(--r2);
-  padding:14px;text-align:center;border:1px solid var(--border);transition:var(--t);cursor:default;
-}
-.scard:hover{transform:translateY(-3px);border-color:var(--border2);}
-.snum{
-  font-size:2rem;font-weight:900;
-  background:linear-gradient(135deg,var(--p2),var(--a));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
-.slbl{font-size:0.72rem;color:var(--txt2);margin-top:3px;font-weight:500;}
-
-/* TIMER */
-.tdisp{
-  font-size:clamp(2.8rem,9vw,5.5rem);font-weight:900;text-align:center;
-  letter-spacing:4px;font-variant-numeric:tabular-nums;
-  background:linear-gradient(135deg,var(--a),var(--p2));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  line-height:1;margin:10px 0;
-}
-.tbtn-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px 0;}
-.mode-btns{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:8px 0;}
-
-/* CHAT */
-.cbox{
-  max-height:340px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;
-  padding:12px;background:rgba(0,0,0,0.2);border-radius:var(--r2);margin-bottom:10px;
-  scroll-behavior:smooth;
-}
-.cmsg{padding:10px 14px;border-radius:18px;max-width:88%;font-size:0.83rem;line-height:1.55;}
-.cmsg.usr{background:var(--p);color:#fff;align-self:flex-end;border-radius:18px 18px 4px 18px;}
-.cmsg.ai{background:var(--glass2);color:var(--txt);align-self:flex-start;border:1px solid var(--border);border-radius:18px 18px 18px 4px;}
-.cmsg.ai b,.cmsg.ai strong{color:var(--a);}
-.cmsg.ai em{color:var(--a2);}
-.cinput{display:flex;gap:8px;}
-.cinput input{flex:1;border-radius:25px!important;min-height:40px;}
-.ai-tag{
-  display:inline-flex;align-items:center;gap:5px;
-  background:rgba(124,107,239,0.15);border:1px solid rgba(124,107,239,0.3);
-  color:var(--p2);font-size:0.7rem;font-weight:700;
-  padding:3px 10px;border-radius:20px;margin-bottom:8px;
-}
-
-/* SHIMMER */
-.shimmer{
-  background:linear-gradient(90deg,var(--glass2) 0%,rgba(255,255,255,0.06) 50%,var(--glass2) 100%);
-  background-size:200% 100%;animation:shim 1.4s infinite;border-radius:8px;min-height:20px;
-}
-@keyframes shim{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
-.typing{display:flex;gap:4px;align-items:center;padding:10px 14px;}
-.dot{width:7px;height:7px;border-radius:50%;background:var(--txt2);animation:bounce 1.2s infinite;}
-.dot:nth-child(2){animation-delay:0.2s;}
-.dot:nth-child(3){animation-delay:0.4s;}
-@keyframes bounce{0%,80%,100%{transform:scale(0.8);opacity:0.5;}40%{transform:scale(1.2);opacity:1;}}
-
-/* FLASHCARD */
-.fc{perspective:1200px;height:200px;cursor:pointer;margin:10px 0;}
-.fci{position:relative;width:100%;height:100%;transition:transform 0.65s cubic-bezier(0.4,0,0.2,1);transform-style:preserve-3d;}
-.fc.flp .fci{transform:rotateY(180deg);}
-.fcf,.fcb{
-  position:absolute;width:100%;height:100%;backface-visibility:hidden;
-  border-radius:var(--r);display:flex;align-items:center;justify-content:center;
-  padding:24px;text-align:center;font-weight:600;font-size:1rem;
-}
-.fcf{background:linear-gradient(135deg,var(--p),#3d2db8);color:#fff;border:1px solid rgba(255,255,255,0.12);}
-.fcb{background:var(--glass2);color:var(--txt);transform:rotateY(180deg);border:2px solid var(--p2);}
-
-/* FORMULA */
-.fbox{
-  font-family:'DM Mono',monospace;font-size:0.82rem;
-  background:rgba(0,0,0,0.25);border:1px solid var(--border);
-  padding:16px;border-radius:var(--r2);max-height:400px;overflow-y:auto;
-  white-space:pre-wrap;line-height:1.7;color:var(--txt);
-}
-.fbox .cat{color:var(--a);font-weight:700;font-size:0.9rem;}
-.fbox .formula{color:var(--p2);}
-
-/* TASK/HW ITEMS */
-.item{
-  display:flex;gap:8px;align-items:center;
-  background:var(--glass2);padding:9px 12px;border-radius:10px;
-  margin-bottom:4px;transition:var(--t);border:1px solid transparent;
-}
-.item:hover{border-color:var(--border);}
-.item.dn span{text-decoration:line-through;opacity:0.45;}
-.item input[type=checkbox]{width:16px;height:16px;accent-color:var(--p);cursor:pointer;flex-shrink:0;}
-
-/* MINDMAP */
-.mm-canvas{
-  position:relative;min-height:360px;border:1px dashed var(--border);
-  border-radius:var(--r);overflow:hidden;background:rgba(0,0,0,0.15);margin-top:12px;
-}
-.mm-node{
-  position:absolute;padding:8px 14px;border-radius:22px;font-weight:700;
-  font-size:0.8rem;text-align:center;cursor:default;
-  box-shadow:0 4px 15px rgba(0,0,0,0.4);transition:var(--t);white-space:nowrap;
-}
-.mm-node:hover{transform:scale(1.05);}
-.mm-center{
-  background:linear-gradient(135deg,var(--p),#4a2de0);color:#fff;
-  font-size:0.95rem;border:2px solid rgba(255,255,255,0.2);
-}
-.mm-child{color:#fff;font-size:0.75rem;}
-svg.mm-lines{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:visible;}
-
-/* RESOURCE CARDS */
-.res-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;}
-.rcard{
-  background:var(--glass2);border:1px solid var(--border);border-radius:var(--r2);
-  padding:14px;transition:var(--t);cursor:pointer;text-decoration:none;color:var(--txt);display:block;
-}
-.rcard:hover{border-color:var(--border2);transform:translateY(-2px);background:rgba(124,107,239,0.1);}
-.rcard .ricon{font-size:1.8rem;margin-bottom:6px;}
-.rcard .rtitle{font-weight:700;font-size:0.88rem;}
-.rcard .rdesc{font-size:0.72rem;color:var(--txt2);margin-top:3px;}
-
-/* MUSIC PLAYER */
-.music-p{
-  background:rgba(0,0,0,0.2);border-radius:var(--r2);padding:12px 14px;
-  border:1px solid var(--border);margin-top:10px;
-}
-.music-p .track{font-size:0.78rem;color:var(--a);font-weight:600;margin-bottom:6px;text-align:center;}
-.music-p .mc{display:flex;gap:6px;align-items:center;justify-content:center;flex-wrap:wrap;}
-.vibe-sel{font-size:0.72rem!important;padding:5px 8px!important;max-width:110px!important;}
-
-/* TOAST */
-.toast{
-  position:fixed;bottom:24px;right:24px;padding:10px 20px;border-radius:25px;
-  font-weight:700;font-size:0.82rem;color:#fff;z-index:9999;
-  animation:tin 0.35s ease;box-shadow:0 8px 30px rgba(0,0,0,0.4);pointer-events:none;
-}
-.toast.suc{background:var(--success);}
-.toast.err{background:var(--danger);}
-.toast.inf{background:var(--p);}
-@keyframes tin{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
-
-/* FOCUS MODE */
-.fov{
-  display:none;position:fixed;inset:0;z-index:800;
-  background:rgba(5,5,20,0.95);backdrop-filter:blur(15px);
-  flex-direction:column;align-items:center;justify-content:center;gap:20px;
-}
-.fov.on{display:flex;}
-.fov textarea{
-  width:85%;max-width:500px;min-height:70px;resize:none;
-  background:rgba(255,255,255,0.06);color:var(--txt);
-  border:1px solid rgba(255,255,255,0.15);border-radius:var(--r2);
-  padding:14px;font-size:1rem;font-family:inherit;outline:none;
-}
-
-/* MODALS */
-.modal{
-  position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);
-  display:flex;justify-content:center;align-items:center;z-index:700;
-  opacity:0;pointer-events:none;transition:opacity 0.25s;
-}
-.modal.on{opacity:1;pointer-events:all;}
-.mbox{
-  background:var(--glass);backdrop-filter:var(--blur);
-  border:1px solid var(--border);border-radius:var(--r);
-  padding:28px;width:92%;max-width:440px;box-shadow:var(--sh2);
-}
-.mbox h3{margin-bottom:12px;font-size:1.1rem;}
-.mbox p{font-size:0.82rem;color:var(--txt2);margin-bottom:12px;line-height:1.5;}
-.mbox input{width:100%;margin:8px 0;}
-.mbox .mbtns{display:flex;gap:8px;margin-top:14px;}
-
-/* INPUTS */
-input[type=text],input[type=date],input[type=password],textarea{
-  padding:9px 14px;border-radius:25px;border:1px solid var(--border);
-  background:rgba(30,30,60,0.6);backdrop-filter:blur(8px);
-  color:var(--txt);font-size:0.82rem;font-family:inherit;outline:none;
-  transition:var(--t);width:100%;
-}
-input:focus,textarea:focus{border-color:var(--p);background:rgba(40,40,80,0.7);}
-textarea{border-radius:14px;resize:vertical;min-height:80px;line-height:1.5;}
-.irow{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
-.irow input,.irow select{flex:1;min-width:100px;}
-
-/* AI RESPONSE FORMAT */
-.ai-resp{line-height:1.65;font-size:0.84rem;}
-.ai-resp h1,.ai-resp h2,.ai-resp h3{color:var(--a);margin:10px 0 5px;font-size:0.95rem;}
-.ai-resp strong,.ai-resp b{color:var(--p2);}
-.ai-resp em{color:var(--a2);}
-.ai-resp code{background:rgba(0,0,0,0.3);padding:1px 5px;border-radius:4px;font-family:'DM Mono',monospace;color:var(--a3);}
-.ai-resp ul,.ai-resp ol{margin-left:16px;margin-top:4px;}
-.ai-resp li{margin-bottom:3px;}
-.ai-resp hr{border:none;border-top:1px solid var(--border);margin:8px 0;}
-
-/* CHART */
-.chart-wrap{max-width:700px;margin:0 auto;min-height:220px;}
-
-/* WEEKLY BAR LABELS */
-.wk-sel{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;}
-
-/* NOTE CARDS */
-.notes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;}
-.ncard{
-  background:var(--glass2);border:1px solid var(--border);border-radius:var(--r2);
-  padding:14px;transition:var(--t);
-}
-.ncard:hover{border-color:var(--border2);}
-.ncard .nt{font-weight:700;margin-bottom:4px;}
-.ncard .nc{font-size:0.78rem;color:var(--txt2);line-height:1.4;}
-.ncard small{font-size:0.65rem;color:var(--txt2);opacity:0.7;}
-
-/* RESPONSIVE */
-@media(max-width:1024px){.sb{width:215px;}.cnt{margin-left:215px;}}
-@media(max-width:768px){
-  .sb{width:270px;transform:translateX(-100%)!important;z-index:250;padding-top:64px;}
-  .sb.mob-on{transform:translateX(0)!important;}
-  .cnt,.cnt.wide{margin-left:0;padding:12px;}
-  .badge{display:none;}
-  .tdisp{font-size:2.8rem;}
-  .hdr-r select{max-width:70px;font-size:0.68rem;}
-  .btn.ico{width:34px;height:34px;}
-  .sgrid{grid-template-columns:repeat(2,1fr);}
-  .mm-canvas{min-height:280px;}
-}
-@media(max-width:480px){
-  .hdr{padding:0 10px;height:50px;}
-  .hdr-r select{max-width:60px;font-size:0.65rem;padding:5px 7px;}
-  .fc{height:170px;}
-  .snum{font-size:1.6rem;}
-  .cnt{padding:10px;}
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyStudentOS - AI Study Platform for Indian Students</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        secondary: '#1e40af',
+                        accent: '#f59e0b'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            min-height: 100vh;
+        }
+        
+        .feature-card {
+            transition: all 0.3s ease;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .ai-response {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border-left: 4px solid #2563eb;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            background-color: #e2e8f0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+        
+        .floating-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .glow-effect {
+            box-shadow: 0 0 20px rgba(37, 99, 235, 0.2);
+        }
+    </style>
 </head>
-<body>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-white text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                        MyStudentOS
+                    </span>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#features" class="text-gray-700 hover:text-primary font-medium transition-colors">Features</a>
+                    <a href="#dashboard" class="text-gray-700 hover:text-primary font-medium transition-colors">Dashboard</a>
+                    <a href="#tools" class="text-gray-700 hover:text-primary font-medium transition-colors">Study Tools</a>
+                    <button onclick="openAuthModal('login')" class="bg-primary hover:bg-secondary text-white px-6 py-2 rounded-lg font-medium transition-colors">
+                        Login
+                    </button>
+                    <button onclick="openAuthModal('signup')" class="bg-accent hover:bg-orange-600 text-white px-6 py-2 rounded-lg font-medium transition-colors">
+                        Sign Up
+                    </button>
+                </div>
+                
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-700 hover:text-primary">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden hidden bg-white border-t">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#features" class="block px-3 py-2 text-gray-700 hover:text-primary">Features</a>
+                <a href="#dashboard" class="block px-3 py-2 text-gray-700 hover:text-primary">Dashboard</a>
+                <a href="#tools" class="block px-3 py-2 text-gray-700 hover:text-primary">Study Tools</a>
+                <button onclick="openAuthModal('login')" class="block w-full text-left px-3 py-2 text-gray-700 hover:text-primary">Login</button>
+                <button onclick="openAuthModal('signup')" class="block w-full text-left px-3 py-2 text-gray-700 hover:text-primary">Sign Up</button>
+            </div>
+        </div>
+    </nav>
 
-<div class="bdp" id="bdp" onclick="closeSB()"></div>
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6">
+                        AI-Powered Learning for
+                        <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                            Indian Students
+                        </span>
+                    </h1>
+                    <p class="text-xl text-gray-600 mb-8 leading-relaxed">
+                        Generate notes, solve doubts, track performance, and create personalized study plans with our intelligent AI assistant. Built specifically for CBSE, ICSE, JEE, and NEET preparation.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button onclick="openAuthModal('signup')" class="bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all transform hover:scale-105 shadow-lg">
+                            Start Learning Free
+                        </button>
+                        <button onclick="scrollToSection('features')" class="border-2 border-primary text-primary hover:bg-primary hover:text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all">
+                            Explore Features
+                        </button>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="floating-animation">
+                        <img src="https://placehold.co/600x400/e5e7eb/374151?text=AI+Learning+Platform" alt="AI Learning Platform" class="rounded-2xl shadow-2xl">
+                    </div>
+                    <div class="absolute -top-4 -right-4 w-24 h-24 bg-accent rounded-full opacity-20 animate-pulse"></div>
+                    <div class="absolute -bottom-4 -left-4 w-32 h-32 bg-primary rounded-full opacity-20 animate-pulse delay-1000"></div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<nav class="sb" id="sb">
-  <div class="nav on" data-p="dash" onclick="go('dash')">📊 Dashboard</div>
-  <div class="nav" data-p="timer" onclick="go('timer')">⏱️ Timer <span class="nb">Pomodoro</span></div>
-  <div class="nav" data-p="pyq" onclick="go('pyq')">📝 PYQ & Papers</div>
-  <div class="nav" data-p="pred" onclick="go('pred')">🔮 CBQ Predictor</div>
-  <div class="nav" data-p="notes" onclick="go('notes')">📒 Notes Maker</div>
-  <div class="nav" data-p="mm" onclick="go('mm')">🧩 Mind Maps</div>
-  <div class="nav" data-p="quiz" onclick="go('quiz')">❓ Quizzes <span class="nb">AI</span></div>
-  <div class="nav" data-p="fc" onclick="go('fc')">🃏 Flash Cards</div>
-  <div class="nav" data-p="form" onclick="go('form')">📐 Formulas</div>
-  <div class="nav" data-p="hw" onclick="go('hw')">✅ Homework</div>
-  <div class="nav" data-p="doubts" onclick="go('doubts')">💬 AI Doubts <span class="nb">Live</span></div>
-  <div class="nav" data-p="weak" onclick="go('weak')">📉 Weak Areas</div>
-  <div class="nav" data-p="res" onclick="go('res')">🔗 Resources</div>
-  <div class="nav" data-p="strat" onclick="go('strat')">🎯 Strategies</div>
-  <div class="nav" data-p="motiv" onclick="go('motiv')">🔥 Motivation</div>
-</nav>
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">Powerful AI Study Tools</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Everything you need to excel in your studies, powered by advanced artificial intelligence
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- AI Study Generator -->
+                <div class="feature-card bg-white p-6 border border-gray-200">
+                    <div class="w-16 h-16 bg-gradient-to-r from-primary to-secondary rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-book-open text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">AI Study Generator</h3>
+                    <p class="text-gray-600 mb-4">Generate concise notes, key points, and important questions instantly for any subject and topic.</p>
+                    <ul class="text-sm text-gray-500 space-y-1">
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i> Concise notes</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i> Key points</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i> Quick revision sheets</li>
+                    </ul>
+                </div>
+                
+                <!-- AI Doubt Solver -->
+                <div class="feature-card bg-white p-6 border border-gray-200">
+                    <div class="w-16 h-16 bg-gradient-to-r from-accent to-orange-500 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-lightbulb text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">AI Doubt Solver</h3>
+                    <p class="text-gray-600 mb-4">Get step-by-step explanations for math and science problems in simple, student-friendly language.</p>
+                    <ul class="text-sm text-gray-500 space-y-1">
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i> Text input</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i> Image upload</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i> Math & Science</li>
+                    </ul>
+                </div>
+                
+                <!-- Study Planner -->
+                <div class="feature-card bg-white p-6 border border-gray-200">
+                    <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-calendar-alt text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Study Planner</h3>
+                    <p class="text-gray-600 mb-4">Create personalized study schedules with priority topics based on your exam dates.</p>
+                    <ul class="text-sm text-gray-500 space-y-1">
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i> Daily schedules</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i> Priority topics</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i> Exam-focused</li>
+                    </ul>
+                </div>
+                
+                <!-- Performance Tracker -->
+                <div class="feature-card bg-white p-6 border border-gray-200">
+                    <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-teal-500 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-chart-line text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Performance Tracker</h3>
+                    <p class="text-gray-600 mb-4">Track your progress, identify weak areas, and monitor improvement over time.</p>
+                    <ul class="text-sm text-gray-500 space-y-1">
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i> Progress tracking</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i> Weak area analysis</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i> Time analytics</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<header class="hdr">
-  <div class="logo-area">
-    <button class="ham" onclick="toggleSB()" aria-label="Menu">☰</button>
-    <div class="logo" onclick="go('dash')">🧠 StudyAI Pro</div>
-    <span class="badge">✨ Built by Master Arhan</span>
-  </div>
-  <div class="hdr-r">
-    <select id="brd" onchange="saveCtx()"><option>CBSE</option><option>ICSE</option><option>Maharashtra</option><option>Tamil Nadu</option><option>Karnataka</option></select>
-    <select id="cls" onchange="saveCtx()"><option>9</option><option>10</option><option>11</option><option>12</option></select>
-    <select id="sub" onchange="saveCtx()"><option>Mathematics</option><option>Physics</option><option>Chemistry</option><option>Biology</option><option>English</option></select>
-    <button class="btn ico sec" onclick="toggleTheme()" title="Toggle theme">🌓</button>
-    <button class="btn ico acc" id="musicBtn" onclick="toggleMusic()" title="Lo-Fi Music">🎵</button>
-    <button class="btn ico acc" onclick="toggleFocus()" title="Focus Mode (Ctrl+Shift+Z)">🧘</button>
-    <button class="btn ico acc" onclick="openExam()" title="Set Exam Date">📅</button>
-    <button class="btn ico" style="background:rgba(124,107,239,0.2);color:var(--p2);" onclick="openAISetup()" title="AI Settings">🔑</button>
-  </div>
-</header>
+    <!-- Dashboard Preview -->
+    <section id="dashboard" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">Intelligent Dashboard</h2>
+                <p class="text-xl text-gray-600">Track your learning journey and optimize your study strategy</p>
+            </div>
+            
+            <div class="dashboard-card p-8">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Progress Overview -->
+                    <div class="lg:col-span-2">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-6">Weekly Progress Overview</h3>
+                        <div class="space-y-6">
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium text-gray-700">Mathematics</span>
+                                    <span class="text-sm text-gray-500">85%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill bg-green-500" style="width: 85%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium text-gray-700">Physics</span>
+                                    <span class="text-sm text-gray-500">72%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill bg-blue-500" style="width: 72%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium text-gray-700">Chemistry</span>
+                                    <span class="text-sm text-gray-500">91%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill bg-purple-500" style="width: 91%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium text-gray-700">Biology</span>
+                                    <span class="text-sm text-gray-500">68%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill bg-orange-500" style="width: 68%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-8 grid grid-cols-2 gap-4">
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <div class="text-2xl font-bold text-blue-600">47</div>
+                                <div class="text-sm text-gray-600">Topics Studied</div>
+                            </div>
+                            <div class="bg-red-50 p-4 rounded-lg">
+                                <div class="text-2xl font-bold text-red-600">12</div>
+                                <div class="text-sm text-gray-600">Weak Areas</div>
+                            </div>
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <div class="text-2xl font-bold text-green-600">156</div>
+                                <div class="text-sm text-gray-600">Questions Solved</div>
+                            </div>
+                            <div class="bg-purple-50 p-4 rounded-lg">
+                                <div class="text-2xl font-bold text-purple-600">32h</div>
+                                <div class="text-sm text-gray-600">Study Time</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Recent Activity -->
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-6">Recent Activity</h3>
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-lg border-l-4 border-blue-500">
+                                <div class="flex items-center mb-2">
+                                    <i class="fas fa-book text-blue-500 mr-2"></i>
+                                    <span class="font-medium text-gray-900">Note Generated</span>
+                                </div>
+                                <p class="text-sm text-gray-600">Mathematics - Calculus</p>
+                                <p class="text-xs text-gray-400 mt-1">2 hours ago</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg border-l-4 border-green-500">
+                                <div class="flex items-center mb-2">
+                                    <i class="fas fa-question-circle text-green-500 mr-2"></i>
+                                    <span class="font-medium text-gray-900">Doubt Solved</span>
+                                </div>
+                                <p class="text-sm text-gray-600">Physics - Mechanics Problem</p>
+                                <p class="text-xs text-gray-400 mt-1">4 hours ago</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg border-l-4 border-purple-500">
+                                <div class="flex items-center mb-2">
+                                    <i class="fas fa-calendar-check text-purple-500 mr-2"></i>
+                                    <span class="font-medium text-gray-900">Plan Updated</span>
+                                </div>
+                                <p class="text-sm text-gray-600">JEE Main Schedule</p>
+                                <p class="text-xs text-gray-400 mt-1">1 day ago</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg border-l-4 border-orange-500">
+                                <div class="flex items-center mb-2">
+                                    <i class="fas fa-chart-bar text-orange-500 mr-2"></i>
+                                    <span class="font-medium text-gray-900">Performance Review</span>
+                                </div>
+                                <p class="text-sm text-gray-600">Weekly Report Generated</p>
+                                <p class="text-xs text-gray-400 mt-1">2 days ago</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<div class="cnt" id="cnt">
-<div class="inner">
+    <!-- Study Tools -->
+    <section id="tools" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">Smart Study Tools</h2>
+                <p class="text-xl text-gray-600">Interactive tools powered by AI to enhance your learning experience</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- AI Note Generator -->
+                <div class="dashboard-card p-6">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                        <i class="fas fa-file-alt text-primary mr-3"></i>
+                        AI Note Generator
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Subject</label>
+                            <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option>Select Subject</option>
+                                <option>Mathematics</option>
+                                <option>Physics</option>
+                                <option>Chemistry</option>
+                                <option>Biology</option>
+                                <option>English</option>
+                                <option>History</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Topic/Chapter</label>
+                            <input type="text" placeholder="Enter topic or chapter name..." class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                        </div>
+                        <button class="w-full bg-gradient-to-r from-primary to-secondary text-white py-3 rounded-lg font-semibold hover:from-secondary hover:to-primary transition-all">
+                            Generate Notes
+                        </button>
+                    </div>
+                    
+                    <div class="mt-6 ai-response p-4 rounded-lg">
+                        <h4 class="font-semibold text-gray-900 mb-2">Generated Notes:</h4>
+                        <p class="text-sm text-gray-600">Click "Generate Notes" to see AI-generated study material with key concepts, formulas, and important points...</p>
+                    </div>
+                </div>
+                
+                <!-- AI Doubt Solver -->
+                <div class="dashboard-card p-6">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                        <i class="fas fa-question-circle text-accent mr-3"></i>
+                        AI Doubt Solver
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Question Type</label>
+                            <div class="flex space-x-4">
+                                <label class="flex items-center">
+                                    <input type="radio" name="question-type" value="text" checked class="mr-2">
+                                    <span>Text Question</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="question-type" value="image" class="mr-2">
+                                    <span>Image Upload</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Your Question</label>
+                            <textarea placeholder="Type your question here..." rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <input type="file" accept="image/*" class="flex-1">
+                            <button class="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-lg transition-colors">
+                                <i class="fas fa-upload mr-2"></i>Upload
+                            </button>
+                        </div>
+                        <button class="w-full bg-gradient-to-r from-accent to-orange-500 text-white py-3 rounded-lg font-semibold hover:from-orange-500 hover:to-accent transition-all">
+                            Solve Doubt
+                        </button>
+                    </div>
+                    
+                    <div class="mt-6 ai-response p-4 rounded-lg">
+                        <h4 class="font-semibold text-gray-900 mb-2">Solution:</h4>
+                        <p class="text-sm text-gray-600">Click "Solve Doubt" to get step-by-step solution with detailed explanations...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<!-- DASHBOARD -->
-<section class="sec on" id="s-dash">
-  <h2>📊 Command Center</h2>
-  <p style="color:var(--txt2);margin-bottom:14px;font-size:0.85rem;">Board: <strong id="d-brd"></strong> · Class <strong id="d-cls"></strong> · <strong id="d-sub"></strong></p>
-  <div class="sgrid" id="sgrid"></div>
-  <div class="card" id="cd-exam" style="display:none;">
-    <h3>📅 <span id="cd-days">--</span> days until exam</h3>
-    <div id="cd-bar" style="height:6px;background:var(--glass2);border-radius:3px;margin-top:8px;overflow:hidden;"><div id="cd-prog" style="height:100%;background:linear-gradient(90deg,var(--p),var(--a));border-radius:3px;transition:width 1s;"></div></div>
-  </div>
-  <div class="card">
-    <h3>✅ Quick Tasks</h3>
-    <div class="irow"><input type="text" id="qtI" placeholder="Add quick task..." onkeydown="if(event.key==='Enter')addQT()"><button class="btn" onclick="addQT()">➕</button></div>
-    <div id="qtList"></div>
-  </div>
-  <div class="card">
-    <h3>📈 Weekly Study Hours</h3>
-    <div class="chart-wrap"><canvas id="wChart"></canvas></div>
-  </div>
-</section>
+    <!-- CTA Section -->
+    <section class="py-20 bg-gradient-to-r from-primary to-secondary">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-bold text-white mb-6">Start Your AI-Powered Learning Journey</h2>
+            <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+                Join thousands of Indian students who are already excelling with MyStudentOS AI study platform
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button onclick="openAuthModal('signup')" class="bg-white text-primary hover:bg-gray-100 px-8 py-4 rounded-xl font-semibold text-lg transition-all transform hover:scale-105 shadow-lg">
+                    Get Started Free
+                </button>
+                <button onclick="scrollToSection('features')" class="border-2 border-white text-white hover:bg-white hover:text-primary px-8 py-4 rounded-xl font-semibold text-lg transition-all">
+                    Learn More
+                </button>
+            </div>
+        </div>
+    </section>
 
-<!-- TIMER -->
-<section class="sec" id="s-timer">
-  <div class="card" style="text-align:center;max-width:500px;margin:0 auto;">
-    <p id="tlbl" style="color:var(--txt2);font-size:0.85rem;margin-bottom:4px;font-weight:600;">🔥 Focus Session</p>
-    <div class="tdisp" id="tDisp">25:00</div>
-    <div class="tbtn-row">
-      <button class="btn acc" onclick="startT()">▶ Start</button>
-      <button class="btn sec" onclick="pauseT()">⏸ Pause</button>
-      <button class="btn sec" onclick="resetT()">↺ Reset</button>
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-8 h-8 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center">
+                            <i class="fas fa-graduation-cap text-white text-sm"></i>
+                        </div>
+                        <span class="text-xl font-bold">MyStudentOS</span>
+                    </div>
+                    <p class="text-gray-400 text-sm">
+                        AI-powered learning platform built specifically for Indian students to excel in academics.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Features</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">AI Study Generator</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Doubt Solver</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Study Planner</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Performance Tracker</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Support</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Help Center</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Contact Us</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Connect</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-primary transition-colors">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-primary transition-colors">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-primary transition-colors">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-primary transition-colors">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
+                <p>&copy; 2024 MyStudentOS. Built by Master Arhan. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="auth-title" class="text-2xl font-bold text-gray-900">Login to Your Account</h3>
+                <button onclick="closeAuthModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            
+            <form id="auth-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                    <input type="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <input type="password" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                </div>
+                <div class="flex items-center justify-between">
+                    <label class="flex items-center">
+                        <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary">
+                        <span class="ml-2 text-sm text-gray-600">Remember me</span>
+                    </label>
+                    <a href="#" class="text-sm text-primary hover:underline">Forgot password?</a>
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-primary to-secondary text-white py-3 rounded-lg font-semibold hover:from-secondary hover:to-primary transition-all">
+                    Login
+                </button>
+            </form>
+            
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">
+                    Don't have an account? 
+                    <button onclick="switchAuthMode()" class="text-primary hover:underline font-medium">
+                        <span id="auth-switch-text">Sign up here</span>
+                    </button>
+                </p>
+            </div>
+        </div>
     </div>
-    <div class="mode-btns">
-      <button class="btn sm sec" onclick="setMode(25)">25m Focus</button>
-      <button class="btn sm sec" onclick="setMode(5)">5m Break</button>
-      <button class="btn sm sec" onclick="setMode(15)">15m Break</button>
-      <button class="btn sm sec" onclick="setMode(50)">50m Deep</button>
-    </div>
-    <p style="color:var(--txt2);font-size:0.8rem;">🍅 Sessions today: <strong id="sessC">0</strong></p>
-    <div class="music-p">
-      <div class="track" id="trackName">Click 🎵 to start Lo-Fi music</div>
-      <div class="mc">
-        <button class="btn sm sec" onclick="prevTrack()">⏮</button>
-        <button class="btn sm acc" id="musicBtn2" onclick="toggleMusic()">🎵 Lo-Fi</button>
-        <button class="btn sm sec" onclick="nextTrack()">⏭</button>
-        <select class="vibe-sel" id="vibeSel" onchange="changeVibe()">
-          <option value="0">🌙 Chill</option>
-          <option value="1">🌧️ Rainy</option>
-          <option value="2">⚡ Synth</option>
-          <option value="3">🌿 Nature</option>
-        </select>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- PYQ -->
-<section class="sec" id="s-pyq">
-  <h2>📝 PYQ & Papers</h2>
-  <div class="card">
-    <div class="ai-tag">📝 Board Examiner AI</div>
-    <div class="irow">
-      <select id="pyqYr"><option>2024</option><option>2023</option><option>2022</option><option>2021</option></select>
-      <select id="pyqType"><option>Board Exam</option><option>Sample Paper</option><option>Pre-Board</option><option>Mock Test</option></select>
-      <button class="btn acc" onclick="genPYQ()">Generate ✨</button>
-    </div>
-    <div class="cbox" id="pyqOut"><div class="cmsg ai" style="color:var(--txt2);">Select year and type, then click Generate to get AI-crafted board exam questions.</div></div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;">
-      <button class="btn sm sec" onclick="dlPYQ('txt')">📄 .txt</button>
-      <button class="btn sm acc" onclick="dlPYQ('pdf')">📑 PDF</button>
-    </div>
-  </div>
-</section>
-
-<!-- CBQ PREDICTOR -->
-<section class="sec" id="s-pred">
-  <h2>🔮 CBQ Predictor</h2>
-  <div class="card">
-    <div class="ai-tag">🔮 Exam Oracle AI</div>
-    <p style="color:var(--txt2);font-size:0.82rem;margin-bottom:10px;">Get AI-predicted high-probability questions for your upcoming exams.</p>
-    <button class="btn" onclick="runPred()">🔮 Run Prediction</button>
-    <div id="predOut" style="margin-top:12px;"></div>
-  </div>
-  <div class="card">
-    <h3>Custom CBQ Generator</h3>
-    <div class="irow">
-      <input type="text" id="cbqTopic" placeholder="Enter specific topic or chapter...">
-      <button class="btn acc" onclick="genCBQ()">Generate CBQs</button>
-    </div>
-    <div id="cbqOut" style="margin-top:8px;"></div>
-  </div>
-</section>
-
-<!-- NOTES -->
-<section class="sec" id="s-notes">
-  <h2>📒 Notes Maker</h2>
-  <div class="card">
-    <div class="ai-tag">📒 Master Scribe AI</div>
-    <div class="irow"><input type="text" id="nTitle" placeholder="Note title..."></div>
-    <textarea id="nContent" placeholder="Write your notes or paste content — AI will structure it for you..." rows="4"></textarea>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;">
-      <button class="btn" onclick="saveNote()">💾 Save</button>
-      <button class="btn acc" onclick="aiEnhNote()">✨ AI Enhance</button>
-      <button class="btn sm sec" onclick="exportNPDF()">📑 PDF</button>
-      <button class="btn sm sec" onclick="note2Quiz()">→ Quiz</button>
-      <button class="btn sm sec" onclick="readNote()">🔊 Read</button>
-      <button class="btn sm sec" onclick="clearNote()">🗑 Clear</button>
-    </div>
-  </div>
-  <div class="notes-grid" id="notesList"></div>
-</section>
-
-<!-- MIND MAP -->
-<section class="sec" id="s-mm">
-  <h2>🧩 Mind Map</h2>
-  <div class="card">
-    <div class="ai-tag">🧩 Concept Mapper AI</div>
-    <div class="irow">
-      <input type="text" id="mmTopic" placeholder="Enter topic (e.g. Photosynthesis, Quadratic Equations)...">
-      <button class="btn acc" onclick="genMM()">🧩 Generate</button>
-    </div>
-    <div class="mm-canvas" id="mmCanvas">
-      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:var(--txt2);font-size:0.85rem;text-align:center;">
-        Enter a topic and click Generate to create a visual mind map
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- QUIZ -->
-<section class="sec" id="s-quiz">
-  <h2>❓ AI Quiz</h2>
-  <div class="card">
-    <div class="ai-tag">❓ Quiz Master AI</div>
-    <div class="irow">
-      <input type="text" id="quizTopic" placeholder="Topic for quiz (or leave blank for current subject)...">
-      <button class="btn acc" onclick="genQuiz()">🎯 Generate Quiz</button>
-    </div>
-    <div id="quizArea" style="margin-top:12px;"></div>
-    <div id="quizRes" style="margin-top:8px;font-weight:700;font-size:1rem;"></div>
-  </div>
-</section>
-
-<!-- FLASHCARDS -->
-<section class="sec" id="s-fc">
-  <h2>🃏 Flash Cards</h2>
-  <div class="card">
-    <div class="irow">
-      <input type="text" id="fcF" placeholder="Front (Question)">
-      <input type="text" id="fcB" placeholder="Back (Answer)">
-      <button class="btn" onclick="addFC()">➕ Add</button>
-    </div>
-  </div>
-  <div class="fc" id="fcCard" onclick="flipFC()">
-    <div class="fci">
-      <div class="fcf" id="fcFText">Add your first card above!</div>
-      <div class="fcb" id="fcBText">Answer appears here</div>
-    </div>
-  </div>
-  <div style="display:flex;gap:8px;justify-content:center;align-items:center;margin:10px 0;flex-wrap:wrap;">
-    <button class="btn sm sec" onclick="prevFC()">◀ Prev</button>
-    <span id="fcCnt" style="color:var(--txt2);font-size:0.8rem;min-width:50px;text-align:center;">0/0</span>
-    <button class="btn sm sec" onclick="nextFC()">Next ▶</button>
-    <button class="btn sm sec" onclick="shuffleFC()">🔀 Shuffle</button>
-    <button class="btn sm dng" onclick="delFC()">🗑 Delete</button>
-  </div>
-  <div id="fcAllList" style="margin-top:10px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;"></div>
-</section>
-
-<!-- FORMULAS -->
-<section class="sec" id="s-form">
-  <h2>📐 Formula Sheet</h2>
-  <div class="card">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
-      <h3>Subject: <strong id="fSubj" style="color:var(--a);"></strong></h3>
-      <div style="display:flex;gap:6px;">
-        <button class="btn sm sec" onclick="copyForm()">📋 Copy</button>
-        <button class="btn sm acc" onclick="dlFormPDF()">📑 PDF</button>
-      </div>
-    </div>
-    <div class="fbox" id="fBox"></div>
-  </div>
-</section>
-
-<!-- HOMEWORK -->
-<section class="sec" id="s-hw">
-  <h2>✅ Homework Tracker</h2>
-  <div class="card">
-    <div class="irow">
-      <input type="text" id="hwT" placeholder="Task description...">
-      <input type="date" id="hwD" style="max-width:150px;border-radius:25px!important;">
-      <select id="hwPri" style="max-width:100px;"><option value="high">🔴 High</option><option value="med" selected>🟡 Med</option><option value="low">🟢 Low</option></select>
-      <button class="btn" onclick="addHW()">➕</button>
-    </div>
-  </div>
-  <div id="hwList"></div>
-  <p style="color:var(--txt2);font-size:0.8rem;margin-top:4px;">✅ Done: <strong id="hwDone">0</strong> · 📋 Pending: <strong id="hwPend">0</strong></p>
-</section>
-
-<!-- AI DOUBTS -->
-<section class="sec" id="s-doubts">
-  <h2>💬 AI Doubts</h2>
-  <div class="card">
-    <div class="ai-tag">💬 Feynman Tutor AI · Explains Simply Then Deeply</div>
-    <div class="cbox" id="dChat">
-      <div class="cmsg ai">👋 Hi! I'm your AI tutor. Ask me anything from your <strong>curriculum</strong> — I'll explain it simply first, then go deeper. What's your doubt?</div>
-    </div>
-    <div class="cinput">
-      <input type="text" id="dInput" placeholder="Type your doubt..." onkeydown="if(event.key==='Enter')askDoubt()">
-      <button class="btn acc" onclick="askDoubt()">Send 🚀</button>
-    </div>
-    <button class="btn sm sec" style="margin-top:8px;" onclick="clearChat('dChat')">🗑 Clear Chat</button>
-  </div>
-</section>
-
-<!-- WEAK AREAS -->
-<section class="sec" id="s-weak">
-  <h2>📉 Weak Areas</h2>
-  <div class="card">
-    <h3>My Weak Topics</h3>
-    <div class="irow">
-      <input type="text" id="wkI" placeholder="Add a weak topic..." onkeydown="if(event.key==='Enter')addWk()">
-      <button class="btn" onclick="addWk()">➕</button>
-    </div>
-    <div id="wkList"></div>
-  </div>
-  <div class="card">
-    <div class="ai-tag">📉 Recovery Coach AI</div>
-    <button class="btn acc" onclick="genRecovery()">📅 Generate 3-Day Recovery Plan</button>
-    <div id="wkOut" style="margin-top:12px;"></div>
-  </div>
-</section>
-
-<!-- RESOURCES -->
-<section class="sec" id="s-res">
-  <h2>🔗 Resources</h2>
-  <div class="card">
-    <h3 id="resTitle">Official Study Resources</h3>
-    <div class="res-grid" id="resGrid"></div>
-  </div>
-  <div class="card" style="margin-top:0;">
-    <h3>🎥 Recommended YouTube Channels</h3>
-    <div class="res-grid" id="ytGrid"></div>
-  </div>
-</section>
-
-<!-- STRATEGIES -->
-<section class="sec" id="s-strat">
-  <h2>🎯 Study Strategies</h2>
-  <div class="card">
-    <div class="ai-tag">🎯 Strategy Architect AI</div>
-    <p style="color:var(--txt2);font-size:0.82rem;margin-bottom:10px;">Get a personalized study strategy based on your board, class, and subject.</p>
-    <button class="btn" onclick="genStrat()">🎯 Get My Strategy</button>
-    <div id="stratOut" style="margin-top:12px;"></div>
-  </div>
-  <div class="card">
-    <h3>😌 Exam Pressure Tips</h3>
-    <div id="pressOut"></div>
-    <button class="btn sm sec" style="margin-top:8px;" onclick="showPressure()">🔄 Refresh Tips</button>
-  </div>
-</section>
-
-<!-- MOTIVATION -->
-<section class="sec" id="s-motiv">
-  <h2>🔥 Motivation</h2>
-  <div class="card" style="text-align:center;max-width:500px;margin:0 auto 16px;">
-    <div style="font-size:2.5rem;margin-bottom:12px;" id="mEmoji">🌟</div>
-    <h3 id="mQ" style="font-size:1.15rem;font-weight:700;line-height:1.5;margin-bottom:8px;">"Success is not final, failure is not fatal."</h3>
-    <p id="mA" style="color:var(--txt2);font-size:0.85rem;">— Winston Churchill</p>
-    <button class="btn acc3" style="margin-top:14px;" onclick="newQuote()">✨ New Quote</button>
-    <button class="btn sec sm" style="margin-top:8px;margin-left:6px;" onclick="aiMotivate()">🤖 AI Motivate Me</button>
-  </div>
-  <div class="card" id="aiMotivCard" style="display:none;max-width:500px;margin:0 auto;">
-    <div class="ai-tag">🔥 Personal AI Motivator</div>
-    <div id="motivOut"></div>
-  </div>
-</section>
-
-</div><!-- /inner -->
-</div><!-- /cnt -->
-
-<!-- FOCUS OVERLAY -->
-<div class="fov" id="fov">
-  <button class="btn dng ico" onclick="toggleFocus()" style="position:absolute;top:16px;right:16px;">✕</button>
-  <div class="tdisp" id="fTDisp">25:00</div>
-  <p style="color:var(--txt2);font-size:0.85rem;">Focus Mode — all distractions hidden</p>
-  <textarea id="fTask" placeholder="What are you focusing on right now?" rows="3" oninput="S.focusTask=this.value;sv()"></textarea>
-  <div class="tbtn-row">
-    <button class="btn acc" onclick="startT()">▶ Start</button>
-    <button class="btn sec" onclick="pauseT()">⏸</button>
-    <button class="btn sec" onclick="resetT()">↺</button>
-  </div>
-</div>
-
-<!-- EXAM MODAL -->
-<div class="modal" id="examM">
-  <div class="mbox">
-    <h3>📅 Set Exam Date</h3>
-    <input type="date" id="examD">
-    <div class="mbtns"><button class="btn" onclick="saveExam()">Save</button><button class="btn sec" onclick="closeModal('examM')">Cancel</button></div>
-  </div>
-</div>
-
-<!-- AI KEY MODAL -->
-<div class="modal" id="aiM">
-  <div class="mbox">
-    <h3>🔑 AI Setup</h3>
-    <p>Enter your <strong>Anthropic API Key</strong> to enable live AI features in all sections. Your key is stored locally in your browser only.</p>
-    <input type="password" id="akIn" placeholder="sk-ant-api03-...">
-    <p style="font-size:0.72rem;color:var(--txt2);margin-top:6px;">Get your key from <a href="https://console.anthropic.com" target="_blank" style="color:var(--a);">console.anthropic.com</a></p>
-    <div class="mbtns">
-      <button class="btn acc" onclick="saveAK()">✅ Enable AI</button>
-      <button class="btn sec" onclick="closeModal('aiM')">Later</button>
-      <button class="btn sm dng" onclick="clearAK()">Clear Key</button>
-    </div>
-  </div>
-</div>
-
-<audio id="aud" preload="none" style="display:none;"></audio>
-<div id="toast" class="toast suc" style="display:none;"></div>
-
-<script>
-(function(){
-"use strict";
-
-// ── STATE ─────────────────────────────────────────────────────────────────
-const DEF = {
-  board:'CBSE', cls:'10', sub:'Mathematics', theme:'dark',
-  timer:{sec:1500,mode:25,running:false,sessToday:0},
-  stats:{hours:0,quizzes:0,hwDone:0,streak:0},
-  sessions:{}, lastDate:null,
-  notes:[], hw:[], fc:[], wk:[], qt:[],
-  fcIdx:0, examDate:null, focusTask:'',
-  lofi:false, vibe:0, track:0
-};
-let S = {...DEF,...(()=>{try{return JSON.parse(localStorage.getItem('sap_v3'))||{};}catch(e){return {};}})()};
-S.timer={...DEF.timer,...(S.timer||{})};
-S.stats={...DEF.stats,...(S.stats||{})};
-['notes','hw','fc','wk','qt','sessions'].forEach(k=>{if(!Array.isArray(S[k]))S[k]=DEF[k]||{};});
-S.sessions=S.sessions||{};
-const sv = ()=>{try{localStorage.setItem('sap_v3',JSON.stringify(S));}catch(e){}};
-const $ = id => document.getElementById(id);
-
-// ── TOAST ─────────────────────────────────────────────────────────────────
-let tTm;
-const toast = (msg, type='suc') => {
-  const t=$('toast');t.textContent=msg;t.className=`toast ${type}`;t.style.display='block';
-  clearTimeout(tTm);tTm=setTimeout(()=>t.style.display='none',2600);
-};
-
-// ── AI PERSONALITIES ──────────────────────────────────────────────────────
-const PERS = {
-  notes: {name:'Master Scribe',sys:`You are the Master Scribe — an expert at creating structured study notes for Indian board exams.
-Transform any topic or content into beautifully structured notes with:
-## [Topic Title]
-**Key Concepts:** (bullet points)
-**Important Definitions:** (key terms explained simply)
-**Formulas/Dates/Facts:** (if applicable, highlighted)
-**Memory Tricks:** (mnemonics or visual tricks)
-**Exam Tips:** (what examiners look for)
-Keep notes concise but complete for board exam preparation.`},
-  pyq: {name:'Board Examiner',sys:`You are a senior Board Examiner creating authentic exam papers for Indian board exams.
-Generate questions with proper mark allocation:
-**1-mark questions:** MCQs and very short answers (3-4 questions)
-**2-mark questions:** Short answer (2 questions)
-**3-mark questions:** Application-based (2 questions)
-**5-mark questions:** Long answer or case study (1-2 questions)
-Match exact style, language and difficulty of official board papers. Start with the board, class, subject, year.`},
-  pred: {name:'Exam Oracle',sys:`You are an Exam Oracle analyzing Indian board exam patterns.
-For the given board/class/subject, predict:
-1. **Top 5 Most Likely Topics** with probability %
-2. **3 High-Probability CBQs** (with model answers)
-3. **Chapter Priority Ranking** (most to least important)
-4. **Common Pitfalls** (what students get wrong)
-Be specific, data-driven, and genuinely helpful for last-minute prep.`},
-  doubts: {name:'Feynman Tutor',sys:`You are a brilliant teacher using the Feynman Technique. For every question:
-
-**🟢 Simple Explanation** (explain like the student is 12 years old, no jargon)
-**📚 Academic Answer** (proper terminology and detail for board exams)
-**🌍 Real-World Analogy** (a relatable everyday example)
-**⚠️ Common Mistake** (what students usually get wrong)
-**💡 Memory Trick** (a quick way to remember for exams)
-
-Focus on CBSE/ICSE Class 9-12 curriculum. Be warm, clear, encouraging and board-exam focused.`},
-  weak: {name:'Recovery Coach',sys:`You are a Study Recovery Coach. Create a targeted 3-day recovery plan for weak topics.
-
-**📅 DAY 1 — Foundation (2-3 hrs)**
-- Hour 1: [specific activity]
-- Hour 2: [specific activity]
-
-**📅 DAY 2 — Practice (2-3 hrs)**
-- Hour 1: [specific activity]
-- Hour 2: [specific activity]
-
-**📅 DAY 3 — Mastery + Mock (2-3 hrs)**
-- Hour 1: [specific activity]
-- Hour 2: [specific activity]
-- Quick self-test checklist
-
-Include: NCERT chapters, specific YouTube resources, practice question types. Be realistic and motivating.`},
-  mm: {name:'Concept Mapper',sys:`Return ONLY valid JSON (no markdown, no extra text) for a mind map:
-{"center":"Topic Name","branches":[{"label":"Branch","color":"#hex","children":["sub1","sub2","sub3"]},...]}`},
-  quiz: {name:'Quiz Master',sys:`Return ONLY a valid JSON array (no markdown, no explanation, no code fences):
-[{"q":"Question?","opts":["A","B","C","D"],"ans":0,"exp":"Why correct"}]
-Generate exactly 5 multiple choice questions. ans is 0-indexed. Make them board-exam style with good distractors.`},
-  strat: {name:'Strategy Architect',sys:`You are a Study Strategy Architect for Indian board exam students.
-Create a personalized strategy including:
-📅 **Weekly Timetable** (subject-wise daily plan)
-📊 **Topic Priority Matrix** (high/medium/low priority)
-✍️ **Answer Writing Tips** (score maximum marks)
-🧠 **Memory Techniques** (spaced repetition, mind maps)
-😌 **Exam Day Tips** (dos and don'ts)
-Be practical, specific to the board/class, and results-focused.`},
-  motiv: {name:'Personal Motivator',sys:`You are an inspiring personal coach for a student preparing for Indian board exams.
-Give a personalized motivational message (150-200 words) that:
-- Acknowledges the hard work
-- Addresses common exam anxiety
-- Uses a powerful analogy or metaphor
-- Ends with a strong actionable affirmation
-- Is warm, real, not generic or preachy
-Be genuine and uplifting.`}
-};
-
-async function callAI(prompt, persona='doubts') {
-  const key = localStorage.getItem('sap_ak');
-  if(!key){openAISetup();toast('🔑 Add API key first','inf');return null;}
-  const p = PERS[persona]||PERS.doubts;
-  const ctx = `[Board: ${S.board}, Class: ${S.cls}, Subject: ${S.sub}]`;
-  try {
-    const r = await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key':key,
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:1200,
-        system:p.sys+'\n\n'+ctx,
-        messages:[{role:'user',content:prompt}]
-      })
-    });
-    if(!r.ok){const e=await r.json();throw new Error(e.error?.message||'API Error');}
-    const d=await r.json();
-    return d.content?.[0]?.text||'No response.';
-  } catch(e) {
-    toast('⚠️ '+e.message,'err');return null;
-  }
-}
-
-function showLoader(elId){
-  $(elId).innerHTML=`<div class="cmsg ai"><div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>`;
-}
-function fmtAI(txt){
-  // Convert markdown to HTML for display
-  return txt
-    .replace(/### (.*)/g,'<h3>$1</h3>')
-    .replace(/## (.*)/g,'<h2>$1</h2>')
-    .replace(/# (.*)/g,'<h1>$1</h1>')
-    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
-    .replace(/\*(.*?)\*/g,'<em>$1</em>')
-    .replace(/`(.*?)`/g,'<code>$1</code>')
-    .replace(/^- (.*)/gm,'<li>$1</li>')
-    .replace(/^\d+\. (.*)/gm,'<li>$1</li>')
-    .replace(/\n\n/g,'<br><br>')
-    .replace(/\n/g,'<br>');
-}
-
-// ── API KEY ───────────────────────────────────────────────────────────────
-window.openAISetup = ()=>{
-  const k=localStorage.getItem('sap_ak');
-  if(k)$('akIn').value=k;
-  openModal('aiM');
-};
-window.saveAK = ()=>{
-  const v=$('akIn').value.trim();
-  if(!v||!v.startsWith('sk-'))return toast('⚠️ Invalid key format','err');
-  localStorage.setItem('sap_ak',v);
-  closeModal('aiM');toast('✅ AI enabled! All sections powered up 🚀');
-};
-window.clearAK = ()=>{localStorage.removeItem('sap_ak');$('akIn').value='';toast('Key cleared','inf');};
-
-// ── MODALS ────────────────────────────────────────────────────────────────
-const openModal = id=>$(id).classList.add('on');
-const closeModal = id=>$(id).classList.remove('on');
-window.closeModal = closeModal;
-window.openExam = ()=>{if(S.examDate)$('examD').value=S.examDate;openModal('examM');};
-window.saveExam = ()=>{const v=$('examD').value;if(v){S.examDate=v;sv();updExam();toast('📅 Saved');}closeModal('examM');};
-
-// ── THEME ─────────────────────────────────────────────────────────────────
-window.toggleTheme = ()=>{document.body.classList.toggle('light');S.theme=document.body.classList.contains('light')?'light':'dark';sv();};
-
-// ── SIDEBAR ───────────────────────────────────────────────────────────────
-window.toggleSB = ()=>{
-  const sb=$('sb'),bd=$('bdp'),ct=$('cnt');
-  const isMob=window.innerWidth<768;
-  if(isMob){sb.classList.toggle('mob-on');bd.classList.toggle('on');}
-  else{
-    const off=sb.classList.toggle('off');
-    ct.classList.toggle('wide',off);
-  }
-};
-window.closeSB = ()=>{$('sb').classList.remove('mob-on');$('bdp').classList.remove('on');};
-
-// ── NAVIGATION ────────────────────────────────────────────────────────────
-window.go = name => {
-  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
-  document.querySelectorAll('.nav').forEach(n=>n.classList.remove('on'));
-  const sec=$('s-'+name);if(sec)sec.classList.add('on');
-  const nav=document.querySelector(`.nav[data-p="${name}"]`);if(nav)nav.classList.add('on');
-  $('cnt').scrollTop=0;window.scrollTo(0,0);
-  if(name==='dash')refreshDash();
-  if(name==='form')renderForm();
-  if(name==='res')renderRes();
-  if(window.innerWidth<768)closeSB();
-  setTimeout(()=>{if(wChart)wChart.resize();},350);
-};
-
-// ── CONTEXT SELECTS ───────────────────────────────────────────────────────
-window.saveCtx = ()=>{
-  S.board=$('brd').value;S.cls=$('cls').value;S.sub=$('sub').value;
-  sv();refreshDash();renderForm();renderRes();
-};
-
-// ── DASHBOARD ─────────────────────────────────────────────────────────────
-function refreshDash(){
-  $('d-brd').textContent=S.board;$('d-cls').textContent=S.cls;$('d-sub').textContent=S.sub;
-  $('sgrid').innerHTML=`
-    <div class="scard"><div class="snum">${(S.stats.hours||0).toFixed(1)}</div><div class="slbl">📖 Study Hrs</div></div>
-    <div class="scard"><div class="snum">${S.stats.quizzes||0}</div><div class="slbl">❓ Quizzes Done</div></div>
-    <div class="scard"><div class="snum">${S.stats.hwDone||0}</div><div class="slbl">✅ HW Done</div></div>
-    <div class="scard"><div class="snum">${S.stats.streak||0}</div><div class="slbl">🔥 Day Streak</div></div>
-    <div class="scard"><div class="snum">${S.notes.length||0}</div><div class="slbl">📒 Notes</div></div>
-    <div class="scard"><div class="snum">${S.fc.length||0}</div><div class="slbl">🃏 Flashcards</div></div>
-  `;
-  $('sessC').textContent=S.timer.sessToday||0;
-  updExam();renderQT();updChart();
-}
-function updExam(){
-  if(!S.examDate){$('cd-exam').style.display='none';return;}
-  const diff=Math.ceil((new Date(S.examDate)-new Date())/86400000);
-  $('cd-exam').style.display='block';
-  $('cd-days').textContent=diff>0?diff:(diff===0?'Today!':'Passed');
-  const pct=Math.max(0,Math.min(100,100-(diff/90*100)));
-  $('cd-prog').style.width=pct+'%';
-}
-
-// ── QUICK TASKS ───────────────────────────────────────────────────────────
-window.addQT = ()=>{const v=$('qtI').value.trim();if(!v)return;S.qt.push({t:v,d:false});$('qtI').value='';sv();renderQT();};
-window.tgQT = i=>{S.qt[i].d=!S.qt[i].d;sv();renderQT();};
-window.delQT = i=>{S.qt.splice(i,1);sv();renderQT();};
-function renderQT(){
-  $('qtList').innerHTML=S.qt.length?
-    S.qt.map((t,i)=>`<div class="item ${t.d?'dn':''}">
-      <input type="checkbox" ${t.d?'checked':''} onchange="tgQT(${i})">
-      <span style="flex:1;">${t.t}</span>
-      <button class="btn sm dng" onclick="delQT(${i})">✕</button>
-    </div>`).join('')
-    :'<p style="color:var(--txt2);font-size:0.8rem;">No tasks yet. Add one above!</p>';
-}
-
-// ── CHART ─────────────────────────────────────────────────────────────────
-let wChart;
-function initChart(){
-  const ctx=$('wChart').getContext('2d');
-  const g=ctx.createLinearGradient(0,0,0,220);
-  g.addColorStop(0,'rgba(124,107,239,0.85)');g.addColorStop(1,'rgba(0,212,204,0.3)');
-  wChart=new Chart(ctx,{
-    type:'bar',
-    data:{labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
-      datasets:[{data:[0,0,0,0,0,0,0],backgroundColor:g,borderColor:'#7c6bef',borderWidth:2,borderRadius:8,borderSkipped:false}]},
-    options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:d=>`${d.raw.toFixed(1)} hrs`}}},
-      scales:{y:{beginAtZero:true,ticks:{color:'#8888aa',font:{family:'Outfit'}},grid:{color:'rgba(255,255,255,0.04)'}},
-        x:{ticks:{color:'#8888aa',font:{family:'Outfit'}},grid:{display:false}}}}});
-}
-function updChart(){
-  if(!wChart)return;
-  const mon=new Date();mon.setDate(mon.getDate()-((mon.getDay()+6)%7));
-  const data=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((_,i)=>{
-    const d=new Date(mon);d.setDate(mon.getDate()+i);
-    return (S.sessions[d.toLocaleDateString()]||0)*0.4;
-  });
-  wChart.data.datasets[0].data=data;wChart.update();
-}
-function addStudyHours(h){
-  const today=new Date().toLocaleDateString();
-  S.sessions[today]=(S.sessions[today]||0)+1;
-  S.stats.hours=(S.stats.hours||0)+h;
-  const yd=new Date(Date.now()-86400000).toLocaleDateString();
-  if(S.lastDate===yd){S.stats.streak=(S.stats.streak||0)+1;}
-  else if(S.lastDate!==today){S.stats.streak=1;}
-  S.lastDate=today;sv();refreshDash();
-}
-
-// ── TIMER ─────────────────────────────────────────────────────────────────
-function updTDisp(){
-  const m=String(Math.floor(S.timer.sec/60)).padStart(2,'0');
-  const s=String(S.timer.sec%60).padStart(2,'0');
-  const str=`${m}:${s}`;
-  $('tDisp').textContent=str;$('fTDisp').textContent=str;
-}
-window.setMode = min=>{S.timer={...S.timer,mode:min,sec:min*60,running:false};clearInterval(S.timer.iv);$('tlbl').textContent=min>=25?'🔥 Focus Session':'☕ Break Time';sv();updTDisp();};
-window.startT = ()=>{
-  if(S.timer.running)return;S.timer.running=true;
-  S.timer.iv=setInterval(()=>{
-    if(S.timer.sec>0){S.timer.sec--;updTDisp();}
-    else{
-      clearInterval(S.timer.iv);S.timer.running=false;
-      if(S.timer.mode>=25){S.timer.sessToday++;addStudyHours(0.4);toast('🎉 Session done! +0.4h');}
-      else toast('☕ Break over! Back to work.');
-      $('tlbl').textContent='✅ Done!';
-      try{new Audio('https://cdn.pixabay.com/download/audio/2022/09/07/audio_edd4bb9ac4.mp3').play();}catch(e){}
-    }
-  },1000);sv();
-};
-window.pauseT = ()=>{S.timer.running=false;clearInterval(S.timer.iv);sv();};
-window.resetT = ()=>{S.timer.running=false;clearInterval(S.timer.iv);S.timer.sec=S.timer.mode*60;updTDisp();sv();};
-window.resetWeek = ()=>{S.sessions={};sv();updChart();toast('Week reset');};
-
-// ── MUSIC ENGINE ──────────────────────────────────────────────────────────
-const VIBES = [
-  {name:'🌙 Chill Lo-Fi',tracks:[
-    {t:'Dreamy Lo-Fi',s:'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3'},
-    {t:'Study Beats',s:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'},
-    {t:'Chill Hop',s:'https://cdn.pixabay.com/download/audio/2022/01/18/audio_69cc1e5c6d.mp3'}
-  ]},
-  {name:'🌧️ Rainy Vibes',tracks:[
-    {t:'Rain & Piano',s:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'},
-    {t:'Rainy Cafe',s:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'}
-  ]},
-  {name:'⚡ Synthwave',tracks:[
-    {t:'Retro Wave',s:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3'},
-    {t:'Neon Nights',s:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3'}
-  ]},
-  {name:'🌿 Nature',tracks:[
-    {t:'Forest Ambient',s:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3'},
-    {t:'Flowing Creek',s:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3'}
-  ]}
-];
-const aud=$('aud');
-function loadTrack(){
-  const vibe=VIBES[S.vibe]||VIBES[0];
-  const track=vibe.tracks[S.track%vibe.tracks.length];
-  aud.src=track.s;aud.load();
-  $('trackName').textContent='🎧 '+track.t+' · '+vibe.name;
-}
-function playAud(){
-  aud.play().then(()=>{
-    S.lofi=true;
-    $('musicBtn').textContent='⏸️';$('musicBtn2').textContent='⏸️ Lo-Fi';sv();
-  }).catch(()=>{toast('⚠️ Trying next track...','inf');nextTrack();});
-}
-window.toggleMusic = ()=>{
-  if(S.lofi){aud.pause();S.lofi=false;$('musicBtn').textContent='🎵';$('musicBtn2').textContent='🎵 Lo-Fi';$('trackName').textContent='Music paused';sv();}
-  else{if(!aud.src||aud.src===location.href)loadTrack();playAud();}
-};
-window.nextTrack = ()=>{S.track=(S.track+1)%(VIBES[S.vibe]?.tracks.length||1);loadTrack();if(S.lofi)playAud();};
-window.prevTrack = ()=>{const len=VIBES[S.vibe]?.tracks.length||1;S.track=(S.track-1+len)%len;loadTrack();if(S.lofi)playAud();};
-window.changeVibe = ()=>{S.vibe=parseInt($('vibeSel').value)||0;S.track=0;loadTrack();if(S.lofi)playAud();sv();};
-aud.addEventListener('ended',()=>{nextTrack();});
-
-// ── PYQ ───────────────────────────────────────────────────────────────────
-window.genPYQ = async()=>{
-  showLoader('pyqOut');
-  const yr=$('pyqYr').value, tp=$('pyqType').value;
-  const r=await callAI(`Generate a complete ${tp} for ${S.board} Class ${S.cls} ${S.sub} (${yr} style). Include all question types.`,'pyq');
-  if(r)$('pyqOut').innerHTML=`<div class="cmsg ai ai-resp">${fmtAI(r)}</div>`;
-};
-window.dlPYQ = fmt=>{
-  const txt=$('pyqOut').innerText;
-  if(!txt||txt.includes('Select year'))return toast('Generate a paper first','inf');
-  if(fmt==='txt'){const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([txt])),download:'PYQ.txt'});a.click();}
-  else{const{jsPDF}=window.jspdf;const d=new jsPDF();d.setFontSize(12);d.text('PYQ - '+S.board+' Class '+S.cls+' '+S.sub,20,20);let y=30;txt.split('\n').forEach(l=>{if(y>275){d.addPage();y=20;}d.setFontSize(9);d.text(l.substring(0,95),20,y);y+=6;});d.save('PYQ.pdf');}
-};
-
-// ── CBQ PREDICTOR ─────────────────────────────────────────────────────────
-window.runPred = async()=>{
-  $('predOut').innerHTML='<div class="shimmer" style="height:120px;"></div>';
-  const r=await callAI(`Predict the most important and likely questions for ${S.board} Class ${S.cls} ${S.sub} upcoming board exam.`,'pred');
-  if(r)$('predOut').innerHTML=`<div class="ai-resp">${fmtAI(r)}</div>`;
-};
-window.genCBQ = async()=>{
-  const topic=$('cbqTopic').value.trim()||S.sub;
-  $('cbqOut').innerHTML='<div class="shimmer" style="height:80px;"></div>';
-  const r=await callAI(`Generate 3 Competency-Based Questions (CBQs) with model answers for the topic: ${topic}. Board: ${S.board}, Class: ${S.cls}.`,'pred');
-  if(r)$('cbqOut').innerHTML=`<div class="ai-resp">${fmtAI(r)}</div>`;
-};
-
-// ── NOTES ─────────────────────────────────────────────────────────────────
-window.saveNote = ()=>{
-  const t=$('nTitle').value.trim(),c=$('nContent').value.trim();
-  if(!t||!c)return toast('Fill title and content','inf');
-  S.notes.unshift({title:t,content:c,date:new Date().toLocaleDateString()});
-  clearNote();sv();renderNotes();refreshDash();toast('📒 Note saved!');
-};
-window.clearNote = ()=>{$('nTitle').value='';$('nContent').value='';};
-window.aiEnhNote = async()=>{
-  const t=$('nTitle').value.trim(),c=$('nContent').value.trim();
-  const input=t||c;if(!input)return toast('Write something first','inf');
-  toast('✨ Enhancing with AI...','inf');
-  const r=await callAI(`Create structured study notes for: ${t||'the following content'}\n\n${c}`,'notes');
-  if(r)$('nContent').value=r;
-};
-window.note2Quiz = ()=>{
-  if(!S.notes.length)return toast('Save a note first','inf');
-  $('quizTopic').value=S.notes[0].title;go('quiz');genQuiz();
-};
-window.readNote = ()=>{
-  const t=$('nContent').value.trim();
-  if(!t)return;
-  if('speechSynthesis' in window){const u=new SpeechSynthesisUtterance(t);u.rate=0.92;speechSynthesis.cancel();speechSynthesis.speak(u);toast('🔊 Reading aloud...');}
-};
-window.exportNPDF = ()=>{
-  if(!S.notes.length)return toast('No notes to export','inf');
-  const{jsPDF}=window.jspdf;const d=new jsPDF();d.setFontSize(14);d.text('Study Notes — '+S.sub,20,20);let y=30;
-  S.notes.forEach(n=>{if(y>265){d.addPage();y=20;}d.setFontSize(11);d.text(n.title+' ('+n.date+')',20,y);y+=7;d.setFontSize(9);const lines=d.splitTextToSize(n.content,170);lines.forEach(l=>{if(y>275){d.addPage();y=20;}d.text(l,20,y);y+=5.5;});y+=5;});
-  d.save('notes.pdf');toast('📑 PDF ready');
-};
-window.delNote = i=>{S.notes.splice(i,1);sv();renderNotes();refreshDash();};
-function renderNotes(){
-  $('notesList').innerHTML=S.notes.length?
-    S.notes.map((n,i)=>`<div class="ncard">
-      <small>${n.date}</small>
-      <div class="nt">${n.title}</div>
-      <div class="nc">${n.content.substring(0,120)}${n.content.length>120?'...':''}</div>
-      <div style="margin-top:8px;display:flex;gap:6px;">
-        <button class="btn sm sec" onclick="loadNote(${i})">✏️ Edit</button>
-        <button class="btn sm dng" onclick="delNote(${i})">🗑</button>
-      </div>
-    </div>`).join('')
-    :'<div class="ncard" style="color:var(--txt2);text-align:center;padding:20px;">No notes yet. Write your first note above!</div>';
-}
-window.loadNote = i=>{$('nTitle').value=S.notes[i].title;$('nContent').value=S.notes[i].content;window.scrollTo(0,0);};
-
-// ── MIND MAP ──────────────────────────────────────────────────────────────
-window.genMM = async()=>{
-  const topic=$('mmTopic').value.trim();if(!topic)return toast('Enter a topic','inf');
-  $('mmCanvas').innerHTML='<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><div class="dot"></div></div>';
-  toast('🧩 Generating mind map...','inf');
-  const r=await callAI(`Create a mind map for: ${topic}. Keep branch labels short (2-4 words). Sub-items should be specific concepts.`,'mm');
-  if(!r)return;
-  try{
-    const clean=r.replace(/```json|```/g,'').trim();
-    const data=JSON.parse(clean);
-    renderMM(data);
-  }catch(e){
-    $('mmCanvas').innerHTML=`<div style="padding:20px;color:var(--txt2);font-size:0.82rem;">${fmtAI(r)}</div>`;
-  }
-};
-function renderMM(data){
-  const c=$('mmCanvas');
-  const W=c.offsetWidth||600, H=Math.max(360,c.offsetHeight);
-  c.style.height=(H)+'px';
-  const cx=W/2, cy=H/2;
-  const branches=data.branches||[];
-  const COLORS=['#7c6bef','#00d4cc','#ff6eb4','#ffd166','#55efc4','#74b9ff'];
-  let html='<svg class="mm-lines" viewBox="0 0 '+W+' '+H+'">';
-  const nodes=[];
-  nodes.push({x:cx,y:cy,label:data.center,cls:'mm-center mm-node',w:140});
-  branches.forEach((b,bi)=>{
-    const angle=(bi/branches.length)*2*Math.PI - Math.PI/2;
-    const R=Math.min(W,H)*0.28;
-    const bx=cx+R*Math.cos(angle), by=cy+R*Math.sin(angle);
-    const col=b.color||COLORS[bi%COLORS.length];
-    nodes.push({x:bx,y:by,label:b.label,col,parent:{x:cx,y:cy},w:110});
-    html+=`<line x1="${cx}" y1="${cy}" x2="${bx}" y2="${by}" stroke="${col}" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>`;
-    (b.children||[]).forEach((ch,ci)=>{
-      const spread=((ci-(b.children.length-1)/2)*0.35);
-      const childAngle=angle+spread;
-      const cR=Math.min(W,H)*0.18;
-      const chx=bx+cR*Math.cos(childAngle), chy=by+cR*Math.sin(childAngle);
-      nodes.push({x:chx,y:chy,label:ch,col,parent:{x:bx,y:by},w:90,isChild:true});
-      html+=`<line x1="${bx}" y1="${by}" x2="${chx}" y2="${chy}" stroke="${col}" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>`;
-    });
-  });
-  html+='</svg>';
-  nodes.forEach(n=>{
-    const fs=n.isChild?'0.68rem':n.cls?.includes('center')?'0.9rem':'0.78rem';
-    const bg=n.cls?.includes('center')?'linear-gradient(135deg,var(--p),#3d2db8)':n.col?`${n.col}cc`:'rgba(30,30,60,0.9)';
-    const tc=n.isChild?'#fff':'#fff';
-    html+=`<div class="mm-node ${n.cls||'mm-child'}" style="
-      left:${n.x-(n.w/2)}px;top:${n.y-18}px;width:${n.w}px;
-      background:${bg};color:${tc};font-size:${fs};
-      border:1px solid rgba(255,255,255,0.15);
-    ">${n.label}</div>`;
-  });
-  c.innerHTML=html;
-}
-
-// ── AI QUIZ ───────────────────────────────────────────────────────────────
-let _quiz=null;
-window.genQuiz = async()=>{
-  const topic=$('quizTopic').value.trim()||S.sub;
-  $('quizArea').innerHTML='<div class="shimmer" style="height:100px;"></div>';
-  $('quizRes').innerHTML='';
-  const r=await callAI(`Generate 5 MCQ quiz questions for topic: ${topic}, Board: ${S.board}, Class: ${S.cls}.`,'quiz');
-  if(!r)return;
-  try{
-    const clean=r.replace(/```json|```/g,'').trim();
-    _quiz={qs:JSON.parse(clean),idx:0,score:0};
-    renderQQ();
-  }catch(e){$('quizArea').innerHTML='<p style="color:var(--txt2);">Could not parse questions. Try again.</p>';}
-};
-function renderQQ(){
-  if(!_quiz||_quiz.idx>=(_quiz.qs?.length||0)){
-    $('quizArea').innerHTML='<p style="text-align:center;font-size:1.1rem;">🎉 Quiz Complete!</p>';
-    $('quizRes').innerHTML=`Score: <span style="color:var(--a);font-size:1.3rem;">${_quiz.score}/${_quiz.qs.length}</span> ${_quiz.score>=3?'🌟 Great!':'📚 Keep studying!'}`;
-    S.stats.quizzes=(S.stats.quizzes||0)+1;sv();refreshDash();return;
-  }
-  const q=_quiz.qs[_quiz.idx];
-  $('quizArea').innerHTML=`
-    <p style="font-weight:700;margin-bottom:10px;">Q${_quiz.idx+1}/${_quiz.qs.length}: ${q.q}</p>
-    ${(q.opts||[]).map((o,i)=>`<button class="btn sec" style="display:block;width:100%;margin:4px 0;text-align:left;border-radius:12px!important;" onclick="ansQ(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}
-  `;
-}
-window.ansQ = i=>{
-  if(!_quiz)return;
-  const q=_quiz.qs[_quiz.idx];
-  const correct=i===q.ans;
-  if(correct)_quiz.score++;
-  const opts=document.querySelectorAll('#quizArea button');
-  opts.forEach((b,j)=>{
-    if(j===q.ans)b.style.background='var(--success)';
-    else if(j===i&&!correct)b.style.background='var(--danger)';
-    b.disabled=true;
-  });
-  if(q.exp)$('quizArea').innerHTML+=`<p style="color:var(--txt2);font-size:0.78rem;margin-top:8px;padding:8px;background:rgba(0,0,0,0.2);border-radius:8px;">💡 ${q.exp}</p>`;
-  $('quizArea').innerHTML+=`<div style="text-align:right;margin-top:8px;"><button class="btn sm acc" onclick="_quiz.idx++;renderQQ();">Next ▶</button></div>`;
-};
-
-// ── FLASHCARDS ────────────────────────────────────────────────────────────
-window.addFC = ()=>{
-  const f=$('fcF').value.trim(),b=$('fcB').value.trim();
-  if(!f||!b)return toast('Fill both sides','inf');
-  S.fc.push({f,b});S.fcIdx=S.fc.length-1;
-  $('fcF').value='';$('fcB').value='';sv();updFC();renderFCList();refreshDash();toast('🃏 Card added!');
-};
-function updFC(){
-  if(!S.fc.length){$('fcFText').textContent='Add your first card above!';$('fcBText').textContent='Answer appears here';$('fcCnt').textContent='0/0';$('fcCard').classList.remove('flp');return;}
-  const c=S.fc[S.fcIdx];
-  $('fcFText').textContent=c.f;$('fcBText').textContent=c.b;
-  $('fcCnt').textContent=`${S.fcIdx+1}/${S.fc.length}`;
-  $('fcCard').classList.remove('flp');
-}
-window.flipFC = ()=>$('fcCard').classList.toggle('flp');
-window.nextFC = ()=>{if(!S.fc.length)return;S.fcIdx=(S.fcIdx+1)%S.fc.length;updFC();};
-window.prevFC = ()=>{if(!S.fc.length)return;S.fcIdx=(S.fcIdx-1+S.fc.length)%S.fc.length;updFC();};
-window.shuffleFC = ()=>{S.fc.sort(()=>Math.random()-0.5);S.fcIdx=0;sv();updFC();renderFCList();toast('🔀 Shuffled!');};
-window.delFC = ()=>{if(!S.fc.length)return;S.fc.splice(S.fcIdx,1);S.fcIdx=Math.min(S.fcIdx,S.fc.length-1);sv();updFC();renderFCList();refreshDash();toast('Card deleted');};
-function renderFCList(){
-  $('fcAllList').innerHTML=S.fc.map((c,i)=>`<div class="item" style="flex-direction:column;align-items:flex-start;gap:4px;cursor:pointer;" onclick="S.fcIdx=${i};updFC();">
-    <span style="font-weight:700;font-size:0.8rem;">Q: ${c.f.substring(0,50)}</span>
-    <span style="color:var(--txt2);font-size:0.75rem;">A: ${c.b.substring(0,50)}</span>
-  </div>`).join('');
-}
-
-// ── FORMULAS ──────────────────────────────────────────────────────────────
-const FORMULAS = {
-  Mathematics:`<span class="cat">━━ ALGEBRA ━━</span>
-<span class="formula">Quadratic Formula:</span> x = (−b ± √(b²−4ac)) / 2a
-<span class="formula">AP nth term:</span> aₙ = a + (n−1)d
-<span class="formula">AP Sum:</span> Sₙ = n/2 · [2a + (n−1)d]
-<span class="formula">GP nth term:</span> aₙ = ar^(n−1)
-<span class="formula">GP Sum:</span> Sₙ = a(rⁿ−1)/(r−1)
-
-<span class="cat">━━ TRIGONOMETRY ━━</span>
-<span class="formula">Identities:</span>
-  sin²θ + cos²θ = 1
-  1 + tan²θ = sec²θ
-  1 + cot²θ = cosec²θ
-<span class="formula">Values:</span>
-  sin30°=½  cos30°=√3/2  tan30°=1/√3
-  sin45°=cos45°=1/√2  tan45°=1
-  sin60°=√3/2  cos60°=½  tan60°=√3
-<span class="formula">Addition:</span> sin(A+B) = sinAcosB + cosAsinB
-
-<span class="cat">━━ COORDINATE GEOMETRY ━━</span>
-<span class="formula">Distance:</span> d = √((x₂-x₁)² + (y₂-y₁)²)
-<span class="formula">Midpoint:</span> M = ((x₁+x₂)/2, (y₁+y₂)/2)
-<span class="formula">Section formula:</span> (mx₂+nx₁)/(m+n), (my₂+ny₁)/(m+n)
-<span class="formula">Slope:</span> m = (y₂-y₁)/(x₂-x₁) = tanθ
-
-<span class="cat">━━ MENSURATION ━━</span>
-  Circle: A = πr², C = 2πr
-  Sphere: SA = 4πr², V = 4/3πr³
-  Cylinder: V = πr²h, CSA = 2πrh
-  Cone: V = 1/3πr²h, l = √(r²+h²)
-  Cuboid: V = lbh, TSA = 2(lb+bh+hl)
-
-<span class="cat">━━ STATISTICS ━━</span>
-<span class="formula">Mean (grouped):</span> x̄ = Σfx / Σf
-<span class="formula">Median:</span> l + [(n/2 − cf)/f] × h
-<span class="formula">Mode:</span> l + [(f₁−f₀)/(2f₁−f₀−f₂)] × h`,
-
-  Physics:`<span class="cat">━━ MOTION ━━</span>
-<span class="formula">Equations of motion:</span>
-  v = u + at
-  s = ut + ½at²
-  v² = u² + 2as
-  s = (u+v)/2 × t
-<span class="formula">Newton's Laws:</span> F = ma, p = mv
-<span class="formula">Impulse:</span> J = Ft = Δp
-
-<span class="cat">━━ WORK, ENERGY, POWER ━━</span>
-  W = Fs·cosθ
-  KE = ½mv²
-  PE = mgh
-  Power P = W/t = Fv
-  Efficiency = (Output/Input) × 100%
-
-<span class="cat">━━ ELECTRICITY ━━</span>
-<span class="formula">Ohm's Law:</span> V = IR
-  P = VI = I²R = V²/R
-  Energy E = Pt = VIt
-  Series: R = R₁+R₂+R₃
-  Parallel: 1/R = 1/R₁+1/R₂+1/R₃
-
-<span class="cat">━━ LIGHT & OPTICS ━━</span>
-  Mirror formula: 1/f = 1/v + 1/u
-  Lens formula: 1/f = 1/v − 1/u
-  Magnification: m = v/u = h'/h
-  Snell's Law: n₁sinθ₁ = n₂sinθ₂
-  n = c/v (refractive index)
-
-<span class="cat">━━ WAVES ━━</span>
-  v = fλ (Speed = Freq × Wavelength)
-  Doppler effect: f' = f(v±vo)/(v∓vs)`,
-
-  Chemistry:`<span class="cat">━━ IMPORTANT REACTIONS ━━</span>
-  Photosynthesis: 6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂
-  Respiration: C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + energy
-  Water electrolysis: 2H₂O → 2H₂ + O₂
-  Neutralisation: Acid + Base → Salt + H₂O
-
-<span class="cat">━━ ACID-BASE ━━</span>
-  pH 0-6: Acidic | pH 7: Neutral | pH 8-14: Basic
-  Strong acids: HCl, H₂SO₄, HNO₃
-  Strong bases: NaOH, KOH, Ca(OH)₂
-  Acid + Metal → Salt + H₂↑
-  Acid + Carbonate → Salt + H₂O + CO₂
-
-<span class="cat">━━ MOLE CONCEPT ━━</span>
-  Mole = mass (g) / molar mass (g/mol)
-  1 mole = 6.022 × 10²³ particles
-  Molarity = moles / volume (L)
-  Molar mass of H₂O = 18 g/mol
-  Molar mass of CO₂ = 44 g/mol
-
-<span class="cat">━━ PERIODIC TABLE TRENDS ━━</span>
-  Atomic radius: ↓ period (decreases), ↓ group (increases)
-  Ionisation energy: ↓ period (increases), ↓ group (decreases)
-  Electronegativity: highest at F (3.98)
-  Metallic character: increases down a group
-
-<span class="cat">━━ ORGANIC ━━</span>
-  Alkanes: CₙH₂ₙ₊₂ (methane, ethane...)
-  Alkenes: CₙH₂ₙ (ethene...)
-  Alkynes: CₙH₂ₙ₋₂ (ethyne...)`,
-
-  Biology:`<span class="cat">━━ LIFE PROCESSES ━━</span>
-  Photosynthesis: CO₂ + H₂O + light → Glucose + O₂
-  Aerobic respiration: Glucose + O₂ → CO₂ + H₂O + 38 ATP
-  Anaerobic (yeast): Glucose → Ethanol + CO₂ + 2 ATP
-  Blood pressure: Normal = 120/80 mmHg
-
-<span class="cat">━━ GENETICS ━━</span>
-  Mendel's F2 ratio: 3 dominant : 1 recessive
-  Probability of dominant trait: 75%
-  Chromosomes: Human = 46 (23 pairs)
-  Sex chromosomes: XX = female, XY = male
-  DNA → mRNA (Transcription) → Protein (Translation)
-
-<span class="cat">━━ ECOLOGY ━━</span>
-  10% energy rule: Only 10% transferred each trophic level
-  Biodiversity: Hotspots = areas with endemic species
-  Carbon cycle: CO₂ → Photosynthesis → Respiration → CO₂
-  Nitrogen cycle: N₂ → Fixation → NH₃ → Nitrates → N₂
-
-<span class="cat">━━ HUMAN BODY ━━</span>
-  Normal heart rate: 72 beats/min
-  Normal RBC count: 5 million/mm³
-  Normal WBC count: 6000-8000/mm³
-  Normal blood glucose: 70-110 mg/dL
-  Hormones: Insulin (pancreas), Adrenalin (adrenal), Thyroxine (thyroid)`,
-
-  English:`<span class="cat">━━ GRAMMAR ESSENTIALS ━━</span>
-  Active to Passive: Object + is/am/are/was/were + V3 + by + Subject
-  Reported Speech: say→said, is→was, will→would, today→that day
-  Articles: a (before consonant), an (before vowel), the (specific)
-  Conditionals:
-    Type 0: If + present, present (universal truth)
-    Type 1: If + present, will + V1 (likely future)
-    Type 2: If + past, would + V1 (unlikely/hypothetical)
-    Type 3: If + past perfect, would have + V3 (impossible past)
-
-<span class="cat">━━ WRITING TIPS ━━</span>
-  Essay structure: Introduction → Body (3 paragraphs) → Conclusion
-  Letter format: Address > Date > Salutation > Body > Subscription
-  Formal: Dear Sir/Madam, Yours faithfully
-  Informal: Dear [Name], Yours sincerely/Lovingly
-  Word limit: Stay within ±10% of given limit
-
-<span class="cat">━━ LITERARY DEVICES ━━</span>
-  Simile: comparison using like/as
-  Metaphor: direct comparison (is/are)
-  Alliteration: same consonant sound repeated
-  Personification: giving human qualities to non-human
-  Irony: saying opposite of what you mean
-  Oxymoron: contradictory terms together`
-};
-function renderForm(){
-  $('fSubj').textContent=S.sub;
-  $('fBox').innerHTML=FORMULAS[S.sub]||`No formula sheet available for ${S.sub}. Use AI Doubts for formulas!`;
-}
-window.copyForm = ()=>{navigator.clipboard.writeText($('fBox').innerText||'').then(()=>toast('📋 Copied!'));};
-window.dlFormPDF = ()=>{
-  const{jsPDF}=window.jspdf;const d=new jsPDF();
-  d.setFontSize(13);d.text(S.sub+' — Formula Sheet',20,20);
-  let y=30;const lines=$('fBox').innerText.split('\n');
-  lines.forEach(l=>{if(y>275){d.addPage();y=20;}d.setFontSize(8.5);d.text(l.substring(0,100),20,y);y+=5.5;});
-  d.save('formulas_'+S.sub+'.pdf');toast('📑 PDF ready');
-};
-
-// ── HOMEWORK ──────────────────────────────────────────────────────────────
-window.addHW = ()=>{
-  const t=$('hwT').value.trim(),dv=$('hwD').value||new Date().toISOString().slice(0,10),p=$('hwPri').value;
-  if(!t)return;S.hw.unshift({t,d:dv,pri:p,done:false});$('hwT').value='';sv();renderHW();
-};
-window.tgHW = i=>{S.hw[i].done=!S.hw[i].done;S.stats.hwDone=S.hw.filter(h=>h.done).length;sv();renderHW();refreshDash();};
-window.delHW = i=>{S.hw.splice(i,1);S.stats.hwDone=S.hw.filter(h=>h.done).length;sv();renderHW();refreshDash();};
-function renderHW(){
-  const PICO={high:'🔴',med:'🟡',low:'🟢'};
-  $('hwList').innerHTML=S.hw.length?
-    S.hw.map((h,i)=>`<div class="item ${h.done?'dn':''}">
-      <input type="checkbox" ${h.done?'checked':''} onchange="tgHW(${i})">
-      <span style="flex:1;"><span>${PICO[h.pri]||'📋'} ${h.t}</span><small style="color:var(--txt2);margin-left:8px;">${h.d}</small></span>
-      <button class="btn sm dng" onclick="delHW(${i})">🗑</button>
-    </div>`).join('')
-    :'<p style="color:var(--txt2);font-size:0.82rem;padding:8px;">No homework. Add a task above!</p>';
-  $('hwDone').textContent=S.hw.filter(h=>h.done).length;
-  $('hwPend').textContent=S.hw.filter(h=>!h.done).length;
-}
-
-// ── AI DOUBTS ─────────────────────────────────────────────────────────────
-window.askDoubt = async()=>{
-  const q=$('dInput').value.trim();if(!q)return;
-  $('dInput').value='';
-  const chat=$('dChat');
-  chat.innerHTML+=`<div class="cmsg usr">🧑‍🎓 ${q}</div>`;
-  chat.innerHTML+=`<div class="cmsg ai" id="d-typing"><div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>`;
-  chat.scrollTop=chat.scrollHeight;
-  const r=await callAI(q,'doubts');
-  const typing=$('d-typing');
-  if(typing)typing.outerHTML=`<div class="cmsg ai ai-resp">${fmtAI(r||'Sorry, could not get a response.')}</div>`;
-  chat.scrollTop=chat.scrollHeight;
-};
-window.clearChat = id=>{
-  const el=$(id);if(!el)return;
-  el.innerHTML='<div class="cmsg ai">Chat cleared. Ask me anything! 👋</div>';
-};
-
-// ── WEAK AREAS ────────────────────────────────────────────────────────────
-window.addWk = ()=>{const v=$('wkI').value.trim();if(!v)return;S.wk.push(v);$('wkI').value='';sv();renderWk();};
-window.delWk = i=>{S.wk.splice(i,1);sv();renderWk();};
-function renderWk(){
-  $('wkList').innerHTML=S.wk.length?
-    S.wk.map((t,i)=>`<div class="item">📉 <span style="flex:1;">${t}</span><button class="btn sm dng" onclick="delWk(${i})">✕</button></div>`).join('')
-    :'<p style="color:var(--txt2);font-size:0.82rem;">Add your weak topics to get a recovery plan.</p>';
-}
-window.genRecovery = async()=>{
-  if(!S.wk.length)return toast('Add weak topics first','inf');
-  $('wkOut').innerHTML='<div class="shimmer" style="height:160px;"></div>';
-  const r=await callAI(`My weak topics are: ${S.wk.join(', ')}. Create a 3-day recovery plan. Board: ${S.board}, Class: ${S.cls}, Subject: ${S.sub}.`,'weak');
-  if(r)$('wkOut').innerHTML=`<div class="ai-resp">${fmtAI(r)}</div>`;
-};
-
-// ── RESOURCES ─────────────────────────────────────────────────────────────
-const RES_DATA = {
-  CBSE:[
-    {icon:'📗',t:'NCERT Official',d:'Free NCERT textbooks & solutions',u:'https://ncert.nic.in'},
-    {icon:'📋',t:'CBSE Official',d:'Syllabus, sample papers, circulars',u:'https://cbse.gov.in'},
-    {icon:'📝',t:'CBSE Sample Papers',d:'Latest pattern sample papers',u:'https://cbseacademic.nic.in'},
-    {icon:'🎓',t:'DIKSHA Platform',d:'Free digital content by NCERT',u:'https://diksha.gov.in'}
-  ],
-  ICSE:[
-    {icon:'📗',t:'CISCE Official',d:'Syllabus & specimen papers',u:'https://cisce.org'},
-    {icon:'📚',t:'Selina Publishers',d:'ICSE textbook solutions',u:'https://www.selinapublishers.com'},
-    {icon:'📝',t:'ISC & ICSE Papers',d:'Past year question papers',u:'https://cisce.org/specimen-papers.aspx'}
-  ],
-  Maharashtra:[
-    {icon:'📗',t:'Balbharati',d:'Maharashtra State board books',u:'https://balbharati.in'},
-    {icon:'📋',t:'MSBSHSE',d:'Maharashtra board official site',u:'https://mahahsscboard.in'}
-  ],
-  'Tamil Nadu':[
-    {icon:'📗',t:'Samacheer Kalvi',d:'TN State board textbooks',u:'https://www.textbooksonline.tn.gov.in'},
-    {icon:'📋',t:'TNDGE',d:'Tamil Nadu board official',u:'https://www.dge.tn.gov.in'}
-  ],
-  Karnataka:[
-    {icon:'📗',t:'KTBS',d:'Karnataka textbook society',u:'https://ktbs.kar.nic.in'},
-    {icon:'📋',t:'KSEEB',d:'Karnataka board official',u:'https://kseab.karnataka.gov.in'}
-  ]
-};
-const YT_DATA = [
-  {icon:'▶️',t:'Khan Academy India',d:'Free world-class education',u:'https://www.khanacademy.org'},
-  {icon:'▶️',t:'Vedantu',d:'Live classes, CBSE/ICSE',u:'https://www.vedantu.com'},
-  {icon:'▶️',t:'BYJU\'S',d:'Animated concept videos',u:'https://byjus.com'},
-  {icon:'▶️',t:'Physics Wallah',d:'Affordable quality education',u:'https://pw.live'},
-  {icon:'▶️',t:'Unacademy',d:'All boards, all subjects',u:'https://unacademy.com'},
-  {icon:'▶️',t:'Doubtnut',d:'Instant doubt solving',u:'https://www.doubtnut.com'}
-];
-function renderRes(){
-  $('resTitle').textContent=S.board+' Official Resources';
-  const resources=RES_DATA[S.board]||RES_DATA.CBSE;
-  $('resGrid').innerHTML=resources.map(r=>`<a href="${r.u}" target="_blank" class="rcard"><div class="ricon">${r.icon}</div><div class="rtitle">${r.t}</div><div class="rdesc">${r.d}</div></a>`).join('');
-  $('ytGrid').innerHTML=YT_DATA.map(r=>`<a href="${r.u}" target="_blank" class="rcard"><div class="ricon">${r.icon}</div><div class="rtitle">${r.t}</div><div class="rdesc">${r.d}</div></a>`).join('');
-}
-
-// ── STRATEGIES ────────────────────────────────────────────────────────────
-window.genStrat = async()=>{
-  $('stratOut').innerHTML='<div class="shimmer" style="height:160px;"></div>';
-  const r=await callAI(`Create a personalized study strategy for ${S.board} Class ${S.cls} student focusing on ${S.sub}.`,'strat');
-  if(r)$('stratOut').innerHTML=`<div class="ai-resp">${fmtAI(r)}</div>`;
-};
-const PRESSURE_TIPS = [
-  ['🧘','Deep breathing: 4-7-8 technique. Inhale 4s, hold 7s, exhale 8s. Repeat 3x.'],
-  ['💧','Stay hydrated! Drink water every 45 minutes. Dehydration reduces focus by 20%.'],
-  ['🚶','Take a 5-minute walk after every hour of study. Movement boosts memory consolidation.'],
-  ['📵','Phone-free study blocks. Place phone in another room, not just face-down.'],
-  ['🌙','Sleep 7-8 hours. Memory is consolidated during sleep. All-nighters are counterproductive.'],
-  ['🎯','Use the 2-minute rule: If a task takes under 2 minutes, do it immediately.'],
-  ['📝','Write exam anxiety on paper, then fold and put away. Externalizing fear reduces it.'],
-  ['💪','Say: "I have prepared well. I can handle this." Positive self-talk works scientifically.']
-];
-window.showPressure = ()=>{
-  const tips=PRESSURE_TIPS.sort(()=>Math.random()-0.5).slice(0,3);
-  $('pressOut').innerHTML=tips.map(t=>`<div class="item">${t[0]} <span>${t[1]}</span></div>`).join('');
-};
-
-// ── MOTIVATION ────────────────────────────────────────────────────────────
-const QUOTES = [
-  {q:"The expert in anything was once a beginner.",a:"Helen Hayes",e:"🌱"},
-  {q:"Education is the passport to the future.",a:"Malcolm X",e:"🎓"},
-  {q:"Success is no accident. It is hard work and perseverance.",a:"Pelé",e:"⚽"},
-  {q:"The secret of getting ahead is getting started.",a:"Mark Twain",e:"🚀"},
-  {q:"Don't watch the clock; do what it does. Keep going.",a:"Sam Levenson",e:"⏰"},
-  {q:"Believe you can and you're halfway there.",a:"Theodore Roosevelt",e:"💫"},
-  {q:"It does not matter how slowly you go, so long as you do not stop.",a:"Confucius",e:"🐢"},
-  {q:"The only way to do great work is to love what you do.",a:"Steve Jobs",e:"❤️"},
-  {q:"Your only competition is who you were yesterday.",a:"Anonymous",e:"🪞"},
-  {q:"Small steps every day lead to giant leaps eventually.",a:"Anonymous",e:"👣"}
-];
-window.newQuote = ()=>{
-  const r=QUOTES[Math.floor(Math.random()*QUOTES.length)];
-  $('mQ').textContent=`"${r.q}"`;$('mA').textContent=`— ${r.a}`;$('mEmoji').textContent=r.e;
-};
-window.aiMotivate = async()=>{
-  $('aiMotivCard').style.display='block';
-  $('motivOut').innerHTML='<div class="shimmer" style="height:100px;"></div>';
-  const r=await callAI(`Give me a heartfelt motivational message. I'm a Class ${S.cls} student preparing for ${S.board} ${S.sub} exam. I've been studying hard and feeling nervous.`,'motiv');
-  if(r)$('motivOut').innerHTML=`<div class="ai-resp">${fmtAI(r)}</div>`;
-};
-
-// ── FOCUS MODE ────────────────────────────────────────────────────────────
-window.toggleFocus = ()=>{
-  document.body.classList.toggle('focus-on');
-  const fov=$('fov');
-  if(fov.classList.toggle('on')){
-    $('fTask').value=S.focusTask||'';updTDisp();$('fTask').focus();
-  } else {S.focusTask=$('fTask').value;sv();}
-};
-document.addEventListener('keydown',e=>{if(e.ctrlKey&&e.shiftKey&&e.key==='Z'){e.preventDefault();toggleFocus();}});
-
-// ── INIT ──────────────────────────────────────────────────────────────────
-function init(){
-  $('brd').value=S.board||'CBSE';
-  $('cls').value=S.cls||'10';
-  $('sub').value=S.sub||'Mathematics';
-  $('vibeSel').value=S.vibe||0;
-  if(S.theme==='light')document.body.classList.add('light');
-  $('hwD').valueAsDate=new Date();
-  updTDisp();initChart();refreshDash();
-  renderNotes();renderHW();updFC();renderFCList();
-  renderForm();renderRes();renderWk();newQuote();showPressure();
-  loadTrack();
-  if(S.lofi){$('musicBtn').textContent='⏸️';$('musicBtn2').textContent='⏸️ Lo-Fi';}
-  // Sidebar state for desktop
-  if(window.innerWidth>768){$('sb').classList.remove('off','mob-on');$('cnt').classList.remove('wide');}
-  else{$('sb').classList.add('off');$('cnt').classList.add('wide');}
-  // Show API key prompt if not set and first time
-  if(!localStorage.getItem('sap_ak')&&!localStorage.getItem('sap_seen')){
-    localStorage.setItem('sap_seen','1');
-    setTimeout(()=>openModal('aiM'),1200);
-  }
-}
-window.addEventListener('resize',()=>{
-  if(window.innerWidth>768){$('sb').classList.remove('off','mob-on');$('cnt').classList.remove('wide');$('bdp').classList.remove('on');}
-  else if(!$('sb').classList.contains('mob-on')){$('sb').classList.add('off');$('cnt').classList.add('wide');}
-  if(wChart)wChart.resize();
-});
-init();
-
-})();
-</script>
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Auth modal functions
+        let isLoginMode = true;
+
+        function openAuthModal(mode) {
+            isLoginMode = mode === 'login';
+            updateAuthModal();
+            document.getElementById('auth-modal').classList.remove('hidden');
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').classList.add('hidden');
+        }
+
+        function switchAuthMode() {
+            isLoginMode = !isLoginMode;
+            updateAuthModal();
+        }
+
+        function updateAuthModal() {
+            const title = document.getElementById('auth-title');
+            const switchText = document.getElementById('auth-switch-text');
+            const form = document.getElementById('auth-form');
+            
+            if (isLoginMode) {
+                title.textContent = 'Login to Your Account';
+                switchText.textContent = 'Sign up here';
+                form.onsubmit = function(e) {
+                    e.preventDefault();
+                    alert('Login functionality would be implemented in the full version!');
+                    closeAuthModal();
+                };
+            } else {
+                title.textContent = 'Create New Account';
+                switchText.textContent = 'Login here';
+                form.onsubmit = function(e) {
+                    e.preventDefault();
+                    alert('Signup functionality would be implemented in the full version!');
+                    closeAuthModal();
+                };
+            }
+        }
+
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('auth-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeAuthModal();
+            }
+        });
+
+        // Add some interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add hover effects to feature cards
+            const featureCards = document.querySelectorAll('.feature-card');
+            featureCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+
+            // Add smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
